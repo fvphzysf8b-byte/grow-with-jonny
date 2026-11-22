@@ -12,6 +12,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Grow with Jonny</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
 <style>
 :root{
   --bg:#0f1412;--card:#171e1b;--card2:#1e2723;--line:#2a3530;--text:#eaf1ec;--muted:#93a59b;--faint:#5f7068;
@@ -189,6 +190,42 @@ select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),
 .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
 .kv .k{color:var(--muted)}
 .plist{display:flex;gap:4px;flex-wrap:wrap}
+.brand,.sbsync,.tbplus .pl{display:none}
+.synccard{display:flex;gap:12px;align-items:center}
+/* ===== Mac / Desktop ===== */
+@media (min-width:900px){
+ body{padding:0 0 40px 236px}
+ .tabbar{top:0;bottom:0;right:auto;width:236px;display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:calc(20px + var(--sat)) 14px 16px;border-top:0;border-right:1px solid var(--line);background:#121816}
+ .brand{display:block;order:-2;font-weight:800;font-size:19px;padding:2px 10px 18px}
+ .tbplus{order:-1;width:100%;height:46px;border-radius:12px;margin:0 0 14px;box-shadow:none;display:flex;gap:8px;font-weight:700;font-size:15px}
+ .tbplus .pl{display:inline}.tbplus svg{width:20px;height:20px}
+ .tb{flex-direction:row;gap:12px;font-size:15px;padding:10px 12px;border-radius:12px}
+ .tb svg{width:22px;height:22px}
+ .tb.on{background:var(--card2)}.tb:hover{background:var(--card)}
+ .sbsync{display:block;margin-top:auto;font-size:12px;color:var(--muted);padding:10px;line-height:1.35}
+ .top{padding:18px 28px 14px}.top.big .ttl{font-size:34px}
+ .wrap{max-width:1140px;padding:20px 28px 0}
+ .hero{margin:-20px -28px 0;height:280px}
+ .tabs{margin:18px 0 0;padding:0}
+ .egrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(400px,1fr));gap:14px;align-items:start}
+ .egrid .ecard{margin:0}
+ .cards2{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:0 10px}
+ .gallery{grid-template-columns:repeat(auto-fill,minmax(170px,1fr));margin:14px 0 0;gap:6px}
+ .gallery button{border-radius:10px}
+ .charts{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+ .chartbox{height:230px}
+ .photos{grid-template-columns:repeat(6,1fr)}
+ .nrow{grid-template-columns:1fr 100px 92px 30px}
+ .tiles{grid-template-columns:repeat(4,1fr)}
+ .calwrap{display:grid;grid-template-columns:minmax(360px,460px) 1fr;gap:32px;align-items:start}
+ .calwrap>div:last-child .h2{margin-top:6px}
+ .overlay{top:4vh;bottom:4vh;left:50%;right:auto;width:700px;margin-left:-350px;border:1px solid var(--line);border-radius:20px;box-shadow:0 30px 80px rgba(0,0,0,.6);overflow:hidden}
+ body.modal:before{content:"";position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:99}
+ .shead{padding:12px 14px}
+ .dlgbg{align-items:center}
+ .toast{bottom:30px;left:calc(50% + 118px)}
+ .pcard:hover,.entry:hover,.lrow:hover,.ecard .ehead:hover .ename{border-color:#3a4a42;color:var(--text)}
+}
 </style>
 </head>
 <body>
@@ -248,22 +285,26 @@ const byDate=(a,b)=>b.date.localeCompare(a.date);
 const nf=(n,l,v,ph='')=>`<label class="field"><span>${l}</span><input name="${n}" type="number" inputmode="decimal" step="any" value="${v??''}" placeholder="${ph}"></label>`;
 
 /* ================= Speicher (IndexedDB, nur auf dem Gerät) ================= */
-const mem={items:new Map(),photos:new Map()};let idb=null,storeOK=false;
-function openDB(){return new Promise((res,rej)=>{let r;try{r=indexedDB.open('growbuch',1)}catch(e){return rej(e)}
- r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains('items'))d.createObjectStore('items',{keyPath:'id'});if(!d.objectStoreNames.contains('photos'))d.createObjectStore('photos')};
+const mem={items:new Map(),photos:new Map()},outbox=new Map();let idb=null,storeOK=false;
+function openDB(){return new Promise((res,rej)=>{let r;try{r=indexedDB.open('growbuch',2)}catch(e){return rej(e)}
+ r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains('items'))d.createObjectStore('items',{keyPath:'id'});if(!d.objectStoreNames.contains('photos'))d.createObjectStore('photos');if(!d.objectStoreNames.contains('outbox'))d.createObjectStore('outbox',{keyPath:'key'})};
  r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
 function req(store,mode,op){return new Promise((res,rej)=>{if(!idb)return res(undefined);try{const r=op(idb.transaction(store,mode).objectStore(store));r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}
 async function initStore(){
- try{idb=await openDB();const a=await req('items','readonly',s=>s.getAll());(a||[]).forEach(o=>mem.items.set(o.id,o));storeOK=true;
+ try{idb=await openDB();const a=await req('items','readonly',s=>s.getAll());(a||[]).forEach(o=>mem.items.set(o.id,o));const ob=await req('outbox','readonly',s=>s.getAll());(ob||[]).forEach(o=>outbox.set(o.key,o));storeOK=true;
   try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
  }catch(e){idb=null;storeOK=false}
 }
 const saveErr=e=>toast('Speichern fehlgeschlagen'+(e&&e.name==='QuotaExceededError'?': Speicher voll':''));
-function put(o){o.updated=Date.now();mem.items.set(o.id,o);return req('items','readwrite',s=>s.put(o)).catch(saveErr)}
-function del(id){mem.items.delete(id);return req('items','readwrite',s=>s.delete(id)).catch(saveErr)}
-async function putPhoto(blob,id=uid()){mem.photos.set(id,blob);await req('photos','readwrite',s=>s.put(blob,id)).catch(saveErr);return id}
-function delPhoto(id){mem.photos.delete(id);const u=urlCache.get(id);if(u){URL.revokeObjectURL(u);urlCache.delete(id)}return req('photos','readwrite',s=>s.delete(id)).catch(()=>{})}
-async function getPhoto(id){let b=mem.photos.get(id);if(!b){b=await req('photos','readonly',s=>s.get(id)).catch(()=>null);if(b)mem.photos.set(id,b)}return b}
+function localPut(o){if(!o||!o.id)return;mem.items.set(o.id,o);return req('items','readwrite',s=>s.put(o)).catch(saveErr)}
+function localDel(id){mem.items.delete(id);return req('items','readwrite',s=>s.delete(id)).catch(saveErr)}
+/* Jede Änderung kommt in die Outbox und wird beim nächsten Sync hochgeladen */
+function enqueue(op){op.v=Date.now()+Math.random();outbox.set(op.key,op);req('outbox','readwrite',s=>s.put(op)).catch(()=>{});scheduleSync()}
+function put(o){o.updated=Date.now();const r=localPut(o);enqueue({key:'i:'+o.id,k:'i',id:o.id});return r}
+function del(id){const o=mem.items.get(id);const r=localDel(id);enqueue({key:'i:'+id,k:'i',id,del:true,type:o?o.type:'x'});return r}
+async function putPhoto(blob,id=uid()){mem.photos.set(id,blob);await req('photos','readwrite',s=>s.put(blob,id)).catch(saveErr);enqueue({key:'p:'+id,k:'p',id});return id}
+function delPhoto(id){mem.photos.delete(id);const u=urlCache.get(id);if(u){URL.revokeObjectURL(u);urlCache.delete(id)}enqueue({key:'p:'+id,k:'p',id,del:true});return req('photos','readwrite',s=>s.delete(id)).catch(()=>{})}
+async function getPhoto(id){let b=mem.photos.get(id);if(!b){b=await req('photos','readonly',s=>s.get(id)).catch(()=>null);if(b)mem.photos.set(id,b)}if(!b)b=await cloudPhoto(id);return b}
 const urlCache=new Map();
 async function photoURL(id){if(urlCache.has(id))return urlCache.get(id);const b=await getPhoto(id);if(!b)return'';const u=URL.createObjectURL(b);urlCache.set(id,u);return u}
 function hydrate(root=document){$$('img[data-ph]',root).forEach(async im=>{const u=await photoURL(im.dataset.ph);if(u)im.src=u;else im.remove()})}
@@ -330,7 +371,7 @@ function render(){
  if(window._cd)drawCharts();
 }
 function tabbar(){const r=rootOf(),T=(k,l,svg)=>`<button class="tb ${r===k?'on':''}" onclick="tab('${k}')">${svg}<span>${l}</span></button>`;
- return `<nav class="tabbar">${T('today','Heute',IC.home)}${T('garden','Garten',IC.leaf)}<button class="tbplus" onclick="plusMenu()" aria-label="Neuer Eintrag">${IC.plus}</button>${T('cal','Kalender',IC.cal)}${T('more','Mehr',IC.more)}</nav>`}
+ return `<nav class="tabbar"><div class="brand">🌱 Grow with Jonny</div>${T('today','Heute',IC.home)}${T('garden','Garten',IC.leaf)}<button class="tbplus" onclick="plusMenu()" aria-label="Neuer Eintrag">${IC.plus}<span class="pl">Neuer Eintrag</span></button>${T('cal','Kalender',IC.cal)}${T('more','Mehr',IC.more)}<div class="sbsync" data-sync>${syncText()}</div></nav>`}
 const head=(title,menu)=>`<header class="top"><button class="ib" onclick="back()" aria-label="Zurück">‹</button><div class="ttl">${esc(title)}</div>${menu?`<button class="ib" onclick="${menu}" aria-label="Menü">⋯</button>`:'<span class="ib"></span>'}</header>`;
 const bighead=(title,sub,right='')=>`<header class="top big"><div class="ttl">${title}${sub?`<div class="sub">${sub}</div>`:''}</div>${right}</header>`;
 const tabs=(list,on)=>`<div class="tabs">${list.map(([k,l])=>`<button class="tab ${k==on?'on':''}" onclick="R.tab='${k}';render()">${l}</button>`).join('')}</div>`;
@@ -344,11 +385,12 @@ function vToday(){
  const recent=all('log').sort(byDate).slice(0,5);
  let h=bighead('Heute',new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'}))+`<div class="wrap">`;
  if(!storeOK)h+=`<div class="banner">Speichern ist in dieser Ansicht nicht möglich. Öffne die App in Safari und lege sie auf den Home-Bildschirm.</div>`;
+ if(sb&&!session&&ls.get('gwj.hideSync')!=='1')h+=`<div class="card synccard" style="margin-bottom:12px"><span style="font-size:26px">☁️</span><div class="grow1 small"><b>Cloud-Sync ist aus.</b> Melde dich an, damit iPhone und Mac dieselben Daten haben.<div class="row" style="margin-top:8px"><button class="btn primary" style="padding:8px 14px" onclick="authSheet()">Anmelden</button><button class="btn" style="padding:8px 14px" onclick="ls.set('gwj.hideSync','1');render()">Später</button></div></div></div>`;
  if(!es.length)return h+setupCard()+`</div>`;
  h+=`<div class="h2">Aufgaben<button onclick="editTask()">+ Erinnerung</button></div>`;
  h+=due.length?due.map(taskRow).join(''):`<div class="card muted small">✓ Heute ist nichts fällig.</div>`;
  if(soon.length)h+=`<div class="muted small" style="margin:10px 4px 6px">Demnächst</div>`+soon.map(taskRow).join('');
- h+=`<div class="h2">Deine Zelte</div>`+es.map(e=>envCard(e,false)).join('');
+ h+=`<div class="h2">Deine Zelte</div><div class="egrid">`+es.map(e=>envCard(e,false)).join('')+`</div>`;
  const jars=jarPlants();if(jars.length)h+=`<div class="card small">🫙 <b>${jars.length}</b> im Glas (Curing) · <button style="color:var(--accent)" onclick="tab('garden')">ansehen</button></div>`;
  if(recent.length)h+=`<div class="h2">Zuletzt</div>`+timeline(recent,'all');
  return h+`</div>`}
@@ -360,9 +402,9 @@ function quickSetup(){const t=new Date().toISOString();['Zelt 1','Zelt 2','Zelt 
 function vGarden(){const es=envs(),jars=jarPlants();
  let h=bighead('Garten',es.length?`${es.length} Zelte · ${activePlants().length} Pflanzen`:'')+`<div class="wrap">`;
  if(!es.length)return h+setupCard()+`</div>`;
- h+=es.map(e=>envCard(e,true)).join('');
+ h+=`<div class="egrid">`+es.map(e=>envCard(e,true)).join('');
  if(jars.length)h+=`<div class="ecard"><div class="ename">🫙 Gläser (Curing)</div><div class="muted small">${jars.length} Pflanze${jars.length>1?'n':''} im Glas</div><div class="pstrip">${jars.map(plantMini).join('')}</div></div>`;
- return h+`<button class="btn block" onclick="editEnv()">+ Zelt hinzufügen</button></div>`}
+ return h+`</div><button class="btn block" style="margin-top:12px" onclick="editEnv()">+ Zelt hinzufügen</button></div>`}
 function phasePills(ps){const c={},d={};ps.forEach(p=>{const a=ageAt(p),k=a.ph.k;c[k]=(c[k]||0)+1;d[k]=Math.max(d[k]||0,a.pday)});
  return PHASES.filter(x=>c[x.k]).map(x=>`<span class="pill"><i style="background:${x.c}"></i>${c[x.k]}× ${x.l} · T${d[x.k]}</span>`).join('')}
 function envMeta(e){const dry=e.kind==='dry';return[dry&&!/trocken/i.test(e.name||'')?'Trockenzelt':null,e.size,!dry&&e.schedule?'☀️ '+e.schedule:null,e.light?e.light+(e.watt?' '+e.watt+' W':''):null,e.medium].filter(Boolean).map(esc).join(' · ')}
@@ -383,7 +425,7 @@ function vEnv(){const e=get(R.id),ps=plantsIn(e.id),ls=logsOfEnv(e.id),dry=e.kin
  let h=head(e.name,'envMenu()')+`<div class="wrap"><div class="hero">${cov?img(cov):(dry?'🍂':'⛺')}</div>
  <div class="card" style="position:relative;z-index:2;margin-top:-40px"><div class="muted small">${envMeta(e)||'Noch keine Details – über ⋯ bearbeiten'}</div><div class="pills">${phasePills(ps)}<span class="pill">${ps.length} Pflanze${ps.length==1?'':'n'}</span></div>${climLine(e)}${ph?`<div class="muted tiny" style="margin-top:4px">${targetText(ph)}${dry?' · Dauer meist 7–14 Tage':''}</div>`:''}${envQuick(e)}</div>`;
  h+=tabs([['plants','Pflanzen'],['log','Tagebuch'],['charts','Verlauf'],['gallery','Galerie']],t);
- if(t==='plants'){h+=`<div style="height:14px"></div>`+(ps.length?ps.map(plantCard).join(''):`<div class="empty">${dry?'Hier landen Pflanzen nach der Ernte.':'Noch keine Pflanzen in diesem Zelt.'}</div>`);
+ if(t==='plants'){h+=`<div style="height:14px"></div>`+(ps.length?`<div class="cards2">`+ps.map(plantCard).join('')+`</div>`:`<div class="empty">${dry?'Hier landen Pflanzen nach der Ernte.':'Noch keine Pflanzen in diesem Zelt.'}</div>`);
   const fl=ps.filter(p=>curPhase(p).k==='flower');
   if(dry){if(ps.length)h+=`<button class="btn primary block" onclick="stageFlow('curing',{envId:'${e.id}'})">🫙 Ins Glas (Curing)</button>`}
   else{if(fl.length)h+=`<button class="btn block" style="margin-bottom:8px" onclick="stageFlow('drying',{envId:'${e.id}'})">🌾 Ernten (${fl.length})</button>`;h+=`<button class="btn block" onclick="editPlant(null,'${e.id}')">+ Pflanze hinzufügen</button>`}}
@@ -479,7 +521,7 @@ function plantTiles(p,ls){const w=ls.filter(l=>l.water),tot=w.reduce((s,l)=>s+(l
 function chartSection(defs){defs=defs.map(d=>({...d,sets:d.sets.filter(s=>s.data.length)})).filter(d=>d.sets.length);
  if(!defs.length)return `<div class="empty">Sobald du Werte einträgst, erscheinen hier die Verläufe.</div>`;
  if(!window.Chart)return `<div class="card muted small" style="margin-top:14px">Diagramme brauchen beim ersten Start eine Internetverbindung.</div>`;
- window._cd=defs;return defs.map((d,i)=>`<div class="chartcard"><h3>${d.title}</h3><div class="chartbox"><canvas id="ch${i}" role="img" aria-label="${esc(d.title)}"></canvas></div></div>`).join('')}
+ window._cd=defs;return `<div class="charts">`+defs.map((d,i)=>`<div class="chartcard"><h3>${d.title}</h3><div class="chartbox"><canvas id="ch${i}" role="img" aria-label="${esc(d.title)}"></canvas></div></div>`).join('')+`</div>`}
 function drawCharts(){if(!window.Chart||!window._cd)return;const muted='#93a59b',text='#eaf1ec',grid='rgba(255,255,255,.06)';
  const dl=v=>new Date(Math.floor(v)*864e5).toLocaleDateString('de-DE',{day:'numeric',month:'numeric',timeZone:'UTC'});
  window._cd.forEach((d,i)=>{const cv=document.getElementById('ch'+i);if(!cv)return;const type=d.type||'line';
@@ -496,12 +538,12 @@ function vCal(){const m=R.month||ymd().slice(0,7),sel=R.sel||ymd();const[y,mo]=m
  for(let d=1;d<=days;d++){const ds=m+'-'+z2(d);g+=`<button class="${ds===ymd()?'today':''} ${ds===sel?'sel':''}" onclick="R.sel='${ds}';render()">${d}<span class="dots">${logs[ds]?'<i style="background:#7bd389"></i>':''}${tasks[ds]?'<i style="background:#f2c14e"></i>':''}</span></button>`}
  const tl=all('task').filter(t=>t.due===sel).sort((a,b)=>a.done-b.done),ll=all('log').filter(l=>l.date.slice(0,10)===sel).sort(byDate);
  const title=new Date(y,mo-1,15).toLocaleDateString('de-DE',{month:'long',year:'numeric'});
- let h=bighead('Kalender','',`<button class="ib" onclick="editTask(null,null,'${sel}')" aria-label="Erinnerung">＋</button>`)+`<div class="wrap"><div class="calhead"><button class="ib" onclick="calMove(-1)">‹</button><b>${title}</b><button class="ib" onclick="calMove(1)">›</button></div><div class="cal">${g}</div>
- <div class="muted tiny" style="margin:8px 4px">🟢 Einträge · 🟡 Erinnerungen</div>
- <div class="h2">${fmtDay(sel)}<button onclick="editTask(null,null,'${sel}')">+ Erinnerung</button></div>`;
+ let h=bighead('Kalender','',`<button class="ib" onclick="editTask(null,null,'${sel}')" aria-label="Erinnerung">＋</button>`)+`<div class="wrap"><div class="calwrap"><div><div class="calhead"><button class="ib" onclick="calMove(-1)">‹</button><b>${title}</b><button class="ib" onclick="calMove(1)">›</button></div><div class="cal">${g}</div>
+ <div class="muted tiny" style="margin:8px 4px">🟢 Einträge · 🟡 Erinnerungen</div></div>
+ <div><div class="h2">${fmtDay(sel)}<button onclick="editTask(null,null,'${sel}')">+ Erinnerung</button></div>`;
  if(!tl.length&&!ll.length)h+=`<div class="card muted small">Nichts an diesem Tag.</div>`;
  h+=tl.map(taskRow).join('');if(ll.length)h+=ll.map(l=>logCard(l,'all')).join('');
- return h+`</div>`}
+ return h+`</div></div></div>`}
 function calMove(n){const m=R.month||ymd().slice(0,7);let[y,mo]=m.split('-').map(Number);mo+=n;if(mo<1){mo=12;y--}if(mo>12){mo=1;y++}R.month=y+'-'+z2(mo);R.sel=R.month+'-01';render()}
 
 /* ================= Aufgaben / Erinnerungen ================= */
@@ -529,10 +571,12 @@ function editTask(t,envId,due){
 function vMore(){R.after=()=>{if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(s=>{const el=$('#stor');if(el&&s.usage!=null)el.textContent=`Belegt: ${fmtN(s.usage/1048576,1)} MB`}).catch(()=>{})};
  const arch=all('plant').filter(p=>p.archived).length;
  return bighead('Mehr')+`<div class="wrap">
+ <div class="h2">Cloud-Sync</div>${session?`<div class="card"><div class="synccard"><span style="font-size:26px">☁️</span><div class="grow1"><b>${esc(session.user.email)}</b><div class="muted small" data-sync>${syncText()}</div></div></div><div class="row" style="margin-top:12px"><button class="btn grow1" onclick="syncNow()">Jetzt abgleichen</button><button class="btn" onclick="signOut()">Abmelden</button></div></div>`
+  :`<div class="card"><div class="synccard"><span style="font-size:26px">☁️</span><div class="grow1"><b>iPhone & Mac abgleichen</b><div class="muted small">${sb?'Mit demselben Konto auf beiden Geräten anmelden – Einträge und Fotos erscheinen dann überall.':'Cloud gerade nicht erreichbar (offline?). Die App funktioniert trotzdem.'}</div></div></div>${sb?`<button class="btn primary block" style="margin-top:12px" onclick="authSheet()">Anmelden / Konto erstellen</button>`:''}</div>`}
  <div class="h2">Grow</div><div><button class="lrow" onclick="go({v:'mixes'})"><span class="ico">🧪</span><span class="grow1">Nährstoff-Mixe</span><span class="muted">${mixes().length} ›</span></button><button class="lrow" onclick="go({v:'archive'})"><span class="ico">📦</span><span class="grow1">Archiv (abgeschlossene Pflanzen)</span><span class="muted">${arch} ›</span></button><button class="lrow" onclick="editEnv()"><span class="ico">⛺</span><span class="grow1">Zelt hinzufügen</span><span class="muted">›</span></button></div>
  <div class="h2">Daten</div><div><button class="lrow" onclick="exportData()"><span class="ico">💾</span><span class="grow1">Backup exportieren</span><span class="muted">›</span></button><label class="lrow"><span class="ico">📥</span><span class="grow1">Backup importieren</span><span class="muted">›</span><input type="file" accept="application/json,.json" hidden onchange="importData(this.files[0])"></label><button class="lrow" onclick="wipe()"><span class="ico">🗑️</span><span class="grow1" style="color:var(--danger)">Alle Daten löschen</span></button></div>
- <div class="card small muted" style="margin-top:10px">Alle Daten und Fotos liegen nur auf diesem iPhone. <span id="stor"></span><br>Wenn du die App vom Home-Bildschirm löschst, sind die Daten weg. Mach deshalb regelmäßig ein Backup, z. B. in iCloud Drive.</div>
- <div class="h2">Installieren</div><div class="card small">In <b>Safari</b> öffnen → <b>Teilen</b> → <b>„Zum Home-Bildschirm“</b>. Danach immer über das Icon starten.</div>
+ <div class="card small muted" style="margin-top:10px">${session?'Deine Daten liegen auf diesem Gerät und verschlüsselt übertragen in deiner privaten Cloud (Frankfurt).':'Ohne Cloud-Sync liegen alle Daten nur auf diesem Gerät – App löschen heißt Daten weg.'} <span id="stor"></span><br>Ein gelegentliches Backup schadet trotzdem nicht.</div>
+ <div class="h2">Installieren</div><div class="card small"><b>iPhone:</b> In Safari öffnen → Teilen → „Zum Home-Bildschirm“.<br><b>Mac:</b> In Safari öffnen → Menü <b>Ablage → Zum Dock hinzufügen</b> (macOS 14 Sonoma oder neuer). In Chrome: Symbol „Installieren“ rechts in der Adressleiste.</div>
  <p class="muted tiny" style="text-align:center;margin:24px 0">Grow with Jonny · ${envs().length} Zelte · ${activePlants().length} Pflanzen · ${all('log').length} Einträge</p></div>`}
 function vMixes(){const ms=mixes();
  return head('Nährstoff-Mixe')+`<div class="wrap"><p class="muted small" style="margin:4px 4px 12px">Lege deine Düngerschemata einmal an, zum Beispiel „Blüte W3“. Beim Düngen wählst du den Mix dann mit einem Tipp.</p>`+
@@ -553,7 +597,7 @@ function editMix(m){
   const x=m||{id:uid(),type:'mix'};x.name=name;x.items=readRows(box);put(x);closeOverlay(o);render()}}
 function vArchive(){const ps=all('plant').filter(p=>p.archived).sort((a,b)=>((b.phases&&b.phases.done)||'').localeCompare((a.phases&&a.phases.done)||''));
  const dry=ps.reduce((s,p)=>s+(p.dry||0),0);
- return head('Archiv')+`<div class="wrap">${ps.length?`<div class="tiles" style="margin-top:0"><div class="tile"><b>${ps.length}</b><span>abgeschlossene Pflanzen</span></div><div class="tile"><b>${fmtN(dry,0)} g</b><span>Ertrag trocken gesamt</span></div></div><div style="height:12px"></div>`+ps.map(plantCard).join(''):`<div class="empty"><div class="big">📦</div>Abgeschlossene Pflanzen landen hier – mit Ertrag und komplettem Tagebuch.</div>`}</div>`}
+ return head('Archiv')+`<div class="wrap">${ps.length?`<div class="tiles" style="margin-top:0"><div class="tile"><b>${ps.length}</b><span>abgeschlossene Pflanzen</span></div><div class="tile"><b>${fmtN(dry,0)} g</b><span>Ertrag trocken gesamt</span></div></div><div style="height:12px"></div><div class="cards2">`+ps.map(plantCard).join('')+`</div>`:`<div class="empty"><div class="big">📦</div>Abgeschlossene Pflanzen landen hier – mit Ertrag und komplettem Tagebuch.</div>`}</div>`}
 
 /* ================= Formulare: Zelt & Pflanze ================= */
 function field(f,v){const val=v??f.d??'';
@@ -720,13 +764,19 @@ async function exportData(){
 async function importData(file){if(!file)return;try{const d=JSON.parse(await file.text());if(d.app!=='growbuch'||!Array.isArray(d.items))throw new Error();
  if(!await confirmDlg(`Backup mit ${d.items.filter(o=>o.type==='plant').length} Pflanzen und ${Object.keys(d.photos||{}).length} Fotos importieren? Vorhandene Daten bleiben erhalten.`,'Importieren'))return;
  for(const[id,b64]of Object.entries(d.photos||{})){const b=await(await fetch(b64)).blob();await putPhoto(b,id)}
- for(const o of d.items){mem.items.set(o.id,o);await req('items','readwrite',s=>s.put(o)).catch(saveErr)}migrate();toast('Import abgeschlossen');tab('today')}catch(e){toast('Datei ist kein gültiges Backup')}}
-async function wipe(){if(!await confirmDlg('Wirklich ALLE Zelte, Pflanzen, Einträge und Fotos von diesem iPhone löschen?','Alles löschen',true))return;
- mem.items.clear();mem.photos.clear();await req('items','readwrite',s=>s.clear()).catch(()=>{});await req('photos','readwrite',s=>s.clear()).catch(()=>{});tab('today')}
+ for(const o of d.items)put(o);migrate();toast('Import abgeschlossen');tab('today')}catch(e){toast('Datei ist kein gültiges Backup')}}
+async function clearLocal(){mem.items.clear();mem.photos.clear();outbox.clear();for(const st of['items','photos','outbox'])await req(st,'readwrite',s=>s.clear()).catch(()=>{})}
+async function wipe(){const cloud=!!(sb&&session);
+ if(!await confirmDlg(`Wirklich ALLE Zelte, Pflanzen, Einträge und Fotos löschen${cloud?' – auf diesem Gerät UND in der Cloud, also auch auf deinen anderen Geräten':''}?`,'Alles löschen',true))return;
+ if(cloud){try{toast('Lösche Cloud-Daten …');const u=session.user.id;const{error}=await sb.from('items').update({deleted:true,data:{}}).eq('user_id',u);if(error)throw error;
+   for(;;){const{data}=await sb.storage.from('photos').list(u,{limit:1000});if(!data||!data.length)break;await sb.storage.from('photos').remove(data.map(f=>u+'/'+f.name));if(data.length<1000)break}}
+  catch(e){toast('Cloud-Daten konnten nicht gelöscht werden – bitte online versuchen');return}}
+ await clearLocal();tab('today')}
 
 /* ================= UI-Bausteine ================= */
-function openOverlay(html){const o=document.createElement('div');o.className='overlay';o.innerHTML=html;document.body.appendChild(o);document.body.style.overflow='hidden';const x=$('[data-x]',o);if(x)x.onclick=()=>closeOverlay(o);return o}
-function closeOverlay(o){o.remove();if(!$('.overlay'))document.body.style.overflow=''}
+function openOverlay(html){const o=document.createElement('div');o.className='overlay';o.innerHTML=html;document.body.appendChild(o);document.body.style.overflow='hidden';document.body.classList.add('modal');const x=$('[data-x]',o);if(x)x.onclick=()=>closeOverlay(o);return o}
+function closeOverlay(o){o.remove();if(!$('.overlay')){document.body.style.overflow='';document.body.classList.remove('modal')}}
+document.addEventListener('keydown',e=>{if(e.key!=='Escape')return;const d=$$('.dlgbg').pop();if(d){d.click();return}const lb=$$('.lb').pop();if(lb){lb.remove();return}const o=$$('.overlay').pop();if(o){const x=$('[data-x]',o);x&&x.click()}});
 function dialog(inner){return new Promise(res=>{const bg=document.createElement('div');bg.className='dlgbg';bg.innerHTML=`<div class="dlg">${inner}</div>`;document.body.appendChild(bg);
  bg.onclick=e=>{const b=e.target.closest('[data-k]');if(b||e.target===bg){bg.remove();res(b?b.dataset.k:null)}}})}
 async function confirmDlg(text,ok,danger){return(await dialog(`<p>${text}</p><button class="btn ${danger?'danger':'primary'}" data-k="ok">${ok}</button><button class="btn" data-k="no">Abbrechen</button>`))==='ok'}
@@ -737,8 +787,84 @@ function lightbox(list,i){const o=document.createElement('div');o.className='lb'
   $('img',o).src=await photoURL(list[i].id);$('[data-c]',o).onclick=()=>o.remove();$('[data-p]',o).onclick=()=>{if(i>0){i--;draw()}};$('[data-n]',o).onclick=()=>{if(i<list.length-1){i++;draw()}}};
  let sx=null;o.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});o.addEventListener('touchend',e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx;sx=null;if(dx<-50&&i<list.length-1){i++;draw()}else if(dx>50&&i>0){i--;draw()}});draw()}
 
+/* ================= Cloud-Sync (Supabase, Server in Frankfurt) ================= */
+const SB_URL='https://metezpitwrudpzgroqzm.supabase.co',SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1ldGV6cGl0d3J1ZHB6Z3JvcXptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTUzMDAzNDEsImV4cCI6MjExMDg3NjM0MX0.-yBgeiUP-Le0HbaWeGx2loTczUJOsmMB9ONzz24MBCg';
+let sb=null,session=null,syncing=false,syncAgain=false,syncTimer=null,syncErr=null,channel=null;
+const ls={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}};
+function syncText(){if(!sb)return'☁️ Cloud nicht erreichbar';if(!session)return'☁️ Nicht angemeldet';if(syncing)return'⟳ Gleiche ab …';
+ if(syncErr)return'⚠︎ Sync-Fehler – versuche es erneut';if(!navigator.onLine)return`📴 Offline · ${outbox.size} Änderung${outbox.size==1?'':'en'} warten`;
+ if(outbox.size)return`⟳ ${outbox.size} Änderung${outbox.size==1?'':'en'} warten`;const t=ls.get('gwj.lastSync');return'✓ Synchronisiert'+(t?' · '+new Date(t).toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'}):'')}
+function updSync(){$$('[data-sync]').forEach(el=>el.textContent=syncText())}
+async function initSync(){
+ if(!window.supabase||!window.supabase.createClient){updSync();return}
+ try{sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,storageKey:'gwj-auth'}});
+  const{data}=await sb.auth.getSession();session=data.session;sb.auth.onAuthStateChange((ev,s)=>{session=s;updSync()});
+ }catch(e){sb=null}
+ if(session)startSync();render();
+ addEventListener('online',()=>syncNow());addEventListener('offline',updSync);
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')syncNow()});
+ setInterval(()=>{if(document.visibilityState==='visible')syncNow()},60000)}
+function scheduleSync(){updSync();if(!session)return;clearTimeout(syncTimer);syncTimer=setTimeout(syncNow,1000)}
+function startSync(){syncNow();if(channel||!sb||!session)return;const u=session.user.id;
+ try{channel=sb.channel('items-'+u).on('postgres_changes',{event:'*',schema:'public',table:'items',filter:'user_id=eq.'+u},async p=>{if(p.new&&p.new.id&&await applyRow(p.new))render()}).subscribe()}catch(e){}}
+async function syncNow(){if(!sb||!session||!navigator.onLine){updSync();return}if(syncing){syncAgain=true;return}syncing=true;updSync();
+ try{await flush();if(await pull())render();syncErr=null;ls.set('gwj.lastSync',new Date().toISOString())}catch(e){syncErr=(e&&e.message)||String(e);console.warn('Sync',syncErr)}
+ syncing=false;updSync();if(syncAgain){syncAgain=false;scheduleSync()}}
+async function unqueue(op){const cur=outbox.get(op.key);if(cur&&cur.v===op.v){outbox.delete(op.key);await req('outbox','readwrite',s=>s.delete(op.key)).catch(()=>{})}}
+async function flush(){const u=session.user.id,ops=[...outbox.values()],io=ops.filter(o=>o.k==='i');
+ for(let i=0;i<io.length;i+=200){const chunk=io.slice(i,i+200);
+  const rows=chunk.map(o=>{const it=mem.items.get(o.id);return(!o.del&&it)?{user_id:u,id:o.id,type:it.type,data:it,deleted:false}:{user_id:u,id:o.id,type:o.type||'x',data:{},deleted:true}});
+  const{error}=await sb.from('items').upsert(rows,{onConflict:'user_id,id'});if(error)throw error;for(const o of chunk)await unqueue(o)}
+ for(const o of ops.filter(o=>o.k==='p')){const path=u+'/'+o.id+'.jpg';
+  if(o.del){const{error}=await sb.storage.from('photos').remove([path]);if(error)throw error}
+  else{const b=mem.photos.get(o.id)||await req('photos','readonly',s=>s.get(o.id)).catch(()=>null);
+   if(b){const{error}=await sb.storage.from('photos').upload(path,b,{upsert:true,contentType:b.type||'image/jpeg'});if(error)throw error}}
+  await unqueue(o)}}
+async function applyRow(r){if(outbox.has('i:'+r.id))return false;const cur=mem.items.get(r.id);
+ if(r.deleted){if(!cur)return false;await localDel(r.id);return true}
+ const d=r.data||{};if(!d.id)d.id=r.id;if(cur&&cur.updated&&cur.updated===d.updated)return false;await localPut(d);return true}
+async function pull(){const since=ls.get('gwj.pullSince');let from=0,changed=false,max=since;
+ for(;;){let q=sb.from('items').select('id,type,data,deleted,updated_at').order('updated_at',{ascending:true}).range(from,from+999);
+  if(since)q=q.gt('updated_at',new Date(new Date(since).getTime()-5*60e3).toISOString());
+  const{data,error}=await q;if(error)throw error;
+  for(const r of data){if(await applyRow(r))changed=true;if(!max||r.updated_at>max)max=r.updated_at}
+  if(data.length<1000)break;from+=1000}
+ if(max)ls.set('gwj.pullSince',max);return changed}
+const photoPending=new Map();
+function cloudPhoto(id){if(!sb||!session)return Promise.resolve(null);if(photoPending.has(id))return photoPending.get(id);
+ const p=(async()=>{try{const{data,error}=await sb.storage.from('photos').download(session.user.id+'/'+id+'.jpg');if(error||!data)return null;
+  mem.photos.set(id,data);await req('photos','readwrite',s=>s.put(data,id)).catch(()=>{});return data}catch(e){return null}finally{photoPending.delete(id)}})();
+ photoPending.set(id,p);return p}
+async function enqueueAll(){mem.items.forEach(o=>enqueue({key:'i:'+o.id,k:'i',id:o.id}));const keys=await req('photos','readonly',s=>s.getAllKeys()).catch(()=>[]);(keys||[]).forEach(id=>enqueue({key:'p:'+id,k:'p',id}))}
+function authSheet(){if(!sb){toast('Cloud nicht erreichbar – Internet prüfen und App neu öffnen');return}
+ const o=openOverlay(`<div class="shead"><button class="btn" data-x>Abbrechen</button><b>☁️ Cloud-Sync</b><span style="width:96px"></span></div><div class="sbody"><form class="in" onsubmit="return false">
+ <p class="muted small" style="margin-top:0">Melde dich auf iPhone und Mac mit demselben Konto an. Danach sind Zelte, Einträge und Fotos überall gleich – auch live, während du auf dem anderen Gerät einträgst.</p>
+ <div class="lbl">E-Mail</div><input type="email" name="em" autocomplete="username" autocapitalize="off" spellcheck="false" value="${esc(ls.get('gwj.email')||'')}">
+ <div class="lbl">Passwort (mind. 8 Zeichen)</div><input type="password" name="pw" autocomplete="current-password">
+ <button class="btn primary block" style="margin-top:16px" data-login>Anmelden</button>
+ <button class="btn block" style="margin-top:8px" data-create>Konto erstellen (nur beim allerersten Mal)</button>
+ <p class="muted tiny" style="margin-top:12px">Es lässt sich genau ein Konto anlegen – deins. Danach meldest du dich auf jedem weiteren Gerät nur noch an.</p></form></div>`);
+ const em=$('[name=em]',o),pw=$('[name=pw]',o),btns=$$('[data-login],[data-create]',o),busy=b=>btns.forEach(x=>x.disabled=b);
+ const login=async()=>{const{data,error}=await sb.auth.signInWithPassword({email:em.value.trim(),password:pw.value});
+  if(error)throw new Error(/invalid/i.test(error.message)?'E-Mail oder Passwort falsch':error.message);session=data.session;ls.set('gwj.email',em.value.trim());closeOverlay(o);await afterLogin()};
+ $('[data-login]',o).onclick=async()=>{busy(true);try{await login()}catch(e){toast(e.message)}busy(false)};
+ $('[data-create]',o).onclick=async()=>{if(pw.value.length<8){toast('Passwort: mindestens 8 Zeichen');return}busy(true);
+  try{const r=await fetch(SB_URL+'/functions/v1/create-account',{method:'POST',headers:{'Content-Type':'application/json',apikey:SB_KEY,Authorization:'Bearer '+SB_KEY},body:JSON.stringify({email:em.value.trim(),password:pw.value})});
+   const j=await r.json().catch(()=>({}));
+   if(!r.ok)throw new Error(j.error==='exists'?'Es gibt schon ein Konto – bitte „Anmelden“ nutzen':j.error==='invalid_email'?'Bitte eine gültige E-Mail eingeben':j.error==='weak_password'?'Passwort: mindestens 8 Zeichen':'Konto konnte nicht erstellt werden');
+   await login()}catch(e){toast(e.message)}busy(false)}}
+async function afterLogin(){const local=mem.items.size>0;let cloudHas=false;
+ try{const{count}=await sb.from('items').select('id',{count:'exact',head:true}).eq('deleted',false);cloudHas=count>0}catch(e){}
+ if(cloudHas&&local&&ls.get('gwj.syncedUser')!==session.user.id){
+  const k=await dialog(`<p><b>In der Cloud sind schon Daten – auf diesem Gerät auch.</b></p><button class="btn primary" data-k="cloud">Cloud übernehmen (Daten auf diesem Gerät verwerfen)</button><button class="btn" data-k="merge">Beides zusammenführen</button>`);
+  if(k==='cloud')await clearLocal();else await enqueueAll()}
+ else if(local)await enqueueAll();
+ ls.set('gwj.syncedUser',session.user.id);ls.set('gwj.pullSince',null);startSync();render();toast('Cloud-Sync ist aktiv ☁️')}
+async function signOut(){if(!await confirmDlg('Abmelden? Deine Daten bleiben auf diesem Gerät, werden aber nicht mehr abgeglichen.','Abmelden'))return;
+ try{if(channel){sb.removeChannel(channel);channel=null}await sb.auth.signOut()}catch(e){}session=null;ls.set('gwj.syncedUser',null);render()}
+
 /* ================= Start ================= */
-(async()=>{await initStore();migrate();render();
+(async()=>{await initStore();migrate();render();initSync();
  if('serviceWorker'in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
 </script>
