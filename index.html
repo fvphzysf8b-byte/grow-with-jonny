@@ -20,93 +20,122 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--text);font:16px/1.4 -apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
-body{padding-bottom:calc(96px + var(--sab));min-height:100vh}
+body{padding-bottom:calc(100px + var(--sab));min-height:100vh}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
 input,select,textarea{font:inherit;color:var(--text);background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:11px 12px;width:100%;outline:none;-webkit-appearance:none;appearance:none}
 input:focus,select:focus,textarea:focus{border-color:var(--accent)}
 textarea{min-height:90px;resize:vertical}
 select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
-.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:8px;padding:calc(10px + var(--sat)) 12px 10px;background:rgba(15,20,18,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:8px;padding:calc(10px + var(--sat)) 12px 10px;background:rgba(15,20,18,.9);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .top .ttl{flex:1;min-width:0;font-weight:700;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
-.top.big .ttl{text-align:left;font-size:28px;padding-left:4px}
+.top.big .ttl{text-align:left;font-size:30px;padding-left:4px;line-height:1.1}
+.top.big .sub{font-size:13px;font-weight:500;color:var(--muted);margin-top:2px}
 .ib{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-size:22px;color:var(--accent);flex:none}
 .ib:active{background:var(--card2)}
 .wrap{padding:14px 14px 0;max-width:760px;margin:0 auto}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
 .muted{color:var(--muted)}.small{font-size:13px}.tiny{font-size:12px}
-.h2{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:22px 4px 8px}
+.h2{font-size:13px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:22px 4px 8px;display:flex;justify-content:space-between;align-items:center}
+.h2 button{color:var(--accent);text-transform:none;letter-spacing:0;font-size:14px}
 .row{display:flex;align-items:center;gap:10px}.grow1{flex:1;min-width:0}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:12px 16px;border-radius:12px;background:var(--card2);border:1px solid var(--line);font-weight:600}
 .btn.primary{background:var(--accent);color:var(--accentInk);border-color:var(--accent)}
 .btn.danger{color:var(--danger)}
 .btn.block{width:100%}
-.fab{position:fixed;right:18px;bottom:calc(20px + var(--sab));z-index:30;height:56px;padding:0 22px;border-radius:28px;background:var(--accent);color:var(--accentInk);font-weight:700;font-size:16px;box-shadow:0 8px 24px rgba(0,0,0,.45);display:flex;align-items:center;gap:8px}
-.fab b{font-size:24px;line-height:0}
-/* grow cards */
-.gcard{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:20px;overflow:hidden;margin-bottom:12px}
-.gcover{height:150px;background:linear-gradient(135deg,#1d2b24,#12241a);display:grid;place-items:center;font-size:44px;position:relative}
-.gcover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.gcover .daytag{position:absolute;left:12px;bottom:12px;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);padding:4px 10px;border-radius:20px;font-size:13px;font-weight:600}
-.gbody{padding:12px 14px 14px}
-.gname{font-weight:700;font-size:18px}
+.btn[disabled]{opacity:.4}
 .pill{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:12px;font-weight:600;background:var(--card2);border:1px solid var(--line);color:var(--muted);white-space:nowrap}
 .pill i{width:8px;height:8px;border-radius:50%;display:inline-block}
 .pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+/* tab bar */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);align-items:end;background:rgba(15,20,18,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid var(--line);padding:6px 4px calc(6px + var(--sab))}
+.tb{display:flex;flex-direction:column;align-items:center;gap:2px;font-size:11px;font-weight:600;color:var(--faint);padding:2px 0}
+.tb svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+.tb.on{color:var(--accent)}
+.tbplus{justify-self:center;width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--accentInk);margin-top:-24px;display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 4px var(--bg)}
+.tbplus svg{width:28px;height:28px;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+/* tent cards */
+.ecard{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:12px}
+.ehead{display:flex;width:100%;text-align:left;align-items:center;gap:8px}
+.ename{font-weight:700;font-size:18px}
+.clim{margin-top:10px;font-size:14px}
+.st{font-size:13px;font-weight:600}.st.ok{color:var(--accent)}.st.bad{color:var(--warn)}
+.eqa{display:flex;gap:6px;margin-top:12px;overflow-x:auto;scrollbar-width:none}
+.eqa::-webkit-scrollbar{display:none}
+.eqa button{flex:1;white-space:nowrap;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:9px 8px;font-size:13px;font-weight:600}
+.pstrip{display:flex;gap:8px;overflow-x:auto;margin:12px -14px -2px;padding:0 14px 2px;scrollbar-width:none}
+.pstrip::-webkit-scrollbar{display:none}
+.pmini{width:84px;flex:none;text-align:center}
+.pmini .pthumb{width:84px;height:84px;margin-bottom:4px}
+.pmini.add .pthumb{border:1.5px dashed var(--faint);background:none;color:var(--muted)}
+.pmname{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pmsub{font-size:11px;color:var(--muted)}
 /* hero */
-.hero{margin:-14px -14px 0;height:200px;position:relative;background:linear-gradient(135deg,#1d2b24,#12241a);display:grid;place-items:center;font-size:56px;overflow:hidden}
+.hero{margin:-14px -14px 0;height:210px;position:relative;background:linear-gradient(135deg,#1d2b24,#12241a);display:grid;place-items:center;font-size:56px;overflow:hidden}
 .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .hero:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 50%,rgba(15,20,18,.95))}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:-34px;position:relative;z-index:2}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 4px;text-align:center}
 .stat b{display:block;font-size:20px;font-variant-numeric:tabular-nums}
 .stat span{font-size:11px;color:var(--muted)}
 .tabs{display:flex;gap:6px;overflow-x:auto;margin:16px -14px 0;padding:0 14px 2px;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tab{padding:8px 14px;border-radius:20px;font-weight:600;font-size:14px;color:var(--muted);background:var(--card);border:1px solid var(--line);white-space:nowrap}
 .tab.on{background:var(--text);color:var(--bg);border-color:var(--text)}
-.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px}
-.quick button{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 4px;font-size:12px;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px}
-.quick button span{font-size:22px}
 /* timeline */
-.dayhead{display:flex;justify-content:space-between;align-items:baseline;margin:20px 4px 8px}
-.dayhead b{font-size:15px}.dayhead span{font-size:12px;color:var(--muted)}
+.dayhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin:20px 4px 8px}
+.dayhead b{font-size:15px}.dayhead span{font-size:12px;color:var(--muted);text-align:right}
 .entry{display:block;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px;margin-bottom:8px}
 .etop{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .etime{font-weight:700;font-variant-numeric:tabular-nums}
 .eicons{font-size:16px;letter-spacing:2px}
-.eline{margin-top:6px;font-size:14px;color:var(--text)}
+.eline{margin-top:6px;font-size:14px}
 .eline .k{color:var(--muted)}
 .enote{margin-top:8px;font-size:14px;color:var(--muted);white-space:pre-wrap}
 .strip{display:flex;gap:6px;margin-top:10px;overflow-x:auto}
 .strip img{width:84px;height:84px;object-fit:cover;border-radius:10px;flex:none;background:var(--card2)}
 /* plants */
 .pcard{display:flex;width:100%;text-align:left;gap:12px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:10px;margin-bottom:8px}
-.pthumb{width:64px;height:64px;border-radius:12px;background:var(--card2);flex:none;display:grid;place-items:center;font-size:28px;overflow:hidden}
+.pthumb{width:64px;height:64px;border-radius:14px;background:var(--card2);flex:none;display:grid;place-items:center;font-size:28px;overflow:hidden}
 .pthumb img{width:100%;height:100%;object-fit:cover}
 .pname{font-weight:700}
 .phasebar{display:flex;gap:3px;margin-top:12px}
 .phasebar div{flex:1;height:6px;border-radius:3px;background:var(--line)}
 .phaselabels{display:flex;justify-content:space-between;font-size:10px;color:var(--faint);margin-top:4px}
 /* gallery */
-.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:0 -14px}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:14px -14px 0}
 .gallery button{aspect-ratio:1;position:relative;overflow:hidden;background:var(--card2)}
 .gallery img{width:100%;height:100%;object-fit:cover;display:block}
 .gallery span{position:absolute;left:4px;bottom:4px;font-size:11px;font-weight:600;background:rgba(0,0,0,.6);padding:1px 6px;border-radius:8px}
-/* stats */
-.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
-.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
-.tile b{display:block;font-size:24px;font-variant-numeric:tabular-nums}
-.tile span{font-size:12px;color:var(--muted)}
+/* charts */
 .chartcard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px 12px 8px;margin-top:10px}
 .chartcard h3{margin:0 0 8px;font-size:15px}
-.chartbox{height:200px;position:relative}
+.chartbox{height:190px;position:relative}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:14px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+.tile b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
+.tile span{font-size:12px;color:var(--muted)}
 /* tasks */
 .task{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:6px}
-.chk{width:26px;height:26px;border-radius:50%;border:2px solid var(--faint);flex:none;display:grid;place-items:center;font-size:14px;color:var(--accentInk)}
+.chk{width:26px;height:26px;border-radius:50%;border:2px solid var(--faint);flex:none;display:grid;place-items:center;font-size:14px;font-weight:700;color:var(--accentInk)}
 .chk.on{background:var(--accent);border-color:var(--accent)}
 .task.done .tt{text-decoration:line-through;color:var(--faint)}
 .due{font-size:12px;color:var(--muted)}.due.late{color:var(--danger)}
-/* sheet */
+/* calendar */
+.calhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.calhead b{font-size:18px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dow{text-align:center;font-size:11px;color:var(--faint);font-weight:600;padding-bottom:4px}
+.cal button{aspect-ratio:1;border-radius:12px;background:var(--card);border:1px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:15px;font-variant-numeric:tabular-nums}
+.cal button.today{border-color:var(--accent);color:var(--accent);font-weight:700}
+.cal button.sel{background:var(--text);color:var(--bg);border-color:var(--text)}
+.cal .dots{display:flex;gap:3px;height:6px}
+.cal .dots i{width:6px;height:6px;border-radius:50%}
+/* list rows */
+.lrow{display:flex;width:100%;align-items:center;gap:12px;text-align:left;background:var(--card);border:1px solid var(--line);padding:14px;font-weight:500}
+.lrow:first-child{border-radius:14px 14px 0 0}.lrow:last-child{border-radius:0 0 14px 14px}.lrow:only-child{border-radius:14px}
+.lrow+.lrow{border-top:0}
+.lrow .ico{font-size:20px;width:26px;text-align:center}
+/* overlay sheet */
 .overlay{position:fixed;inset:0;z-index:100;background:var(--bg);display:flex;flex-direction:column;animation:up .22s ease}
 @keyframes up{from{transform:translateY(30px);opacity:0}}
 .shead{display:flex;align-items:center;gap:8px;padding:calc(10px + var(--sat)) 12px 10px;border-bottom:1px solid var(--line)}
@@ -129,83 +158,103 @@ select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),
 .sec{display:none;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-top:10px}
 .sec.on{display:block}
 .sec h4{margin:0 0 10px;font-size:15px}
-.nrow{display:grid;grid-template-columns:1fr 90px 36px;gap:6px;margin-bottom:6px}
+.nrow{display:grid;grid-template-columns:1fr 66px 78px 30px;gap:6px;margin-bottom:6px}
+.nrow select{padding-right:22px;background-position:calc(100% - 13px) 50%,calc(100% - 8px) 50%}
 .vpd{margin-top:8px;font-size:14px}
 .photos{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
 .photos .ph{aspect-ratio:1;border-radius:10px;overflow:hidden;position:relative;background:var(--card2)}
 .photos img{width:100%;height:100%;object-fit:cover}
 .photos .x{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.7);font-size:13px;display:grid;place-items:center}
 .addph{aspect-ratio:1;border-radius:10px;border:1.5px dashed var(--faint);display:grid;place-items:center;font-size:26px;color:var(--muted);cursor:pointer}
+.hrow{display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:6px}
+.hrow input{width:100px}
 /* dialogs */
 .dlgbg{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center;padding:12px 12px calc(12px + var(--sab))}
 .dlg{width:100%;max-width:440px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:16px;animation:up .18s ease}
 .dlg p{margin:0 0 14px;text-align:center}
 .dlg .btn{width:100%;margin-top:8px}
-.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(90px + var(--sab));z-index:300;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:20px;font-weight:600;font-size:14px;max-width:90vw}
+.menu .btn{justify-content:flex-start}
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px}
+.pgrid button{background:var(--card2);border:1px solid var(--line);border-radius:14px;padding:12px 2px;font-size:12px;font-weight:600;display:flex;flex-direction:column;align-items:center;gap:4px}
+.pgrid button span{font-size:26px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(96px + var(--sab));z-index:300;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:20px;font-weight:600;font-size:14px;max-width:90vw;text-align:center}
 .lb{position:fixed;inset:0;z-index:250;background:#000;display:flex;flex-direction:column}
 .lb .imgw{flex:1;display:grid;place-items:center;overflow:hidden}
 .lb img{max-width:100%;max-height:100%;object-fit:contain}
 .lb .bar{display:flex;align-items:center;gap:8px;padding:calc(8px + var(--sat)) 12px 8px}
 .lb .cap{flex:1;text-align:center;font-weight:600}
-.empty{text-align:center;padding:40px 20px;color:var(--muted)}
-.empty .big{font-size:52px;margin-bottom:8px}
+.empty{text-align:center;padding:32px 20px;color:var(--muted)}
+.empty .big{font-size:48px;margin-bottom:8px}
 .banner{background:rgba(242,193,78,.12);border:1px solid rgba(242,193,78,.4);color:var(--warn);border-radius:14px;padding:10px 12px;font-size:13px;margin-bottom:12px}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:14px}
 .kv .k{color:var(--muted)}
 .plist{display:flex;gap:4px;flex-wrap:wrap}
-.menu .btn{justify-content:flex-start}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
 "use strict";
-/* ============ Konstanten ============ */
+/* ================= Konstanten ================= */
 const PHASES=[
  {k:'germination',l:'Keimung',c:'#c9a46a',i:'🫘'},
  {k:'seedling',l:'Sämling',c:'#9be08f',i:'🌱'},
  {k:'veg',l:'Wachstum',c:'#4fbf6b',i:'🌿'},
  {k:'flower',l:'Blüte',c:'#d68be0',i:'🌸'},
  {k:'drying',l:'Trocknung',c:'#e0a85a',i:'🍂'},
- {k:'curing',l:'Curing',c:'#b8875a',i:'🫙'},
- {k:'done',l:'Fertig',c:'#8fa198',i:'✅'}];
+ {k:'curing',l:'Curing',c:'#b8875a',i:'🫙'}];
 const PH=Object.fromEntries(PHASES.map(p=>[p.k,p]));
 const ACTS=[
- {k:'water',l:'Gießen',i:'💧'},{k:'feed',l:'Düngen',i:'🧪'},{k:'env',l:'Klima',i:'🌡️'},{k:'measure',l:'Messen',i:'📏'},
- {k:'training',l:'Training',i:'✂️'},{k:'phase',l:'Phase',i:'🔄'},{k:'problem',l:'Problem',i:'🐛'},{k:'harvest',l:'Ernte',i:'⚖️'}];
-const ACT=Object.fromEntries(ACTS.map(a=>[a.k,a]));
-const TRAININGS=['Topping','FIM','LST','HST','Supercropping','Entlauben','Lollipopping','SCROG','SOG','Mainlining','Umtopfen','Stecklinge genommen','Spülen'];
+ {k:'water',l:'Gießen',i:'💧'},{k:'feed',l:'Düngen',i:'🧪'},{k:'env',l:'Klima',i:'🌡️'},{k:'train',l:'Training',i:'✂️'},
+ {k:'transplant',l:'Umtopfen',i:'🪴'},{k:'measure',l:'Messen',i:'📏'},{k:'problem',l:'Problem',i:'🐛'},{k:'phase',l:'Phase',i:'🔄'}];
+const ACTI={...Object.fromEntries(ACTS.map(a=>[a.k,a])),harvest:{k:'harvest',l:'Ernte',i:'⚖️'}};
+const TRAININGS=['Topping','FIM','LST','HST','Supercropping','Entlauben','Lollipopping','SCROG','Mainlining','Stecklinge genommen','Spülen'];
 const PROBLEMS=['Stickstoffmangel','Kaliummangel','Magnesiummangel','Calciummangel','Überdüngung','Überwässerung','Unterwässerung','Lichtstress','Hitzestress','Spinnmilben','Thripse','Trauermücken','Blattläuse','Mehltau','Schimmel / Botrytis','Wurzelfäule','pH-Problem'];
-const ENVS=['Indoor','Outdoor','Gewächshaus'];
-const MEDIA=['Erde','Living Soil','Coco','Hydro (DWC)','Steinwolle','Aeroponik','Sonstiges'];
-const LIGHTS=['LED','HPS / NDL','CMH / LEC','Leuchtstoff / CFL','Sonne','Gemischt'];
-const PTYPES=['Photoperiodisch (feminisiert)','Autoflower','Regulär','Steckling / Klon'];
+const LIGHTS=['LED','HPS / NDL','CMH / LEC','Leuchtstoff / CFL','Gemischt'];
+const MEDIA=['Erde','Living Soil','Coco','Hydro (DWC)','Steinwolle','Sonstiges'];
+const SCHEDULES=['18/6','20/4','24/0','12/12','11/13'];
+const PTYPES=['Feminisiert (photo)','Autoflower','Regulär','Steckling / Klon'];
+const REPEATS=[[0,'Nie'],[1,'Täglich'],[2,'Alle 2 Tage'],[3,'Alle 3 Tage'],[7,'Wöchentlich'],[14,'Alle 2 Wochen']];
 const SERIES=['#3987e5','#d95926','#199e70','#c98500','#d55181','#0ca30c','#9085e9','#e66767'];
+/* Zielwerte je Phase: Temperatur °C, rel. Luftfeuchte %, VPD kPa */
+const TARGET={germination:{t:[22,26],h:[65,80],v:[.4,.8]},seedling:{t:[22,26],h:[65,75],v:[.4,.8]},veg:{t:[22,28],h:[55,70],v:[.8,1.2]},flower:{t:[20,26],h:[40,55],v:[1.2,1.6]},drying:{t:[15,21],h:[55,65]}};
+const IC={
+ home:'<svg viewBox="0 0 24 24"><path d="M4 11l8-6.5 8 6.5v8.5a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></svg>',
+ leaf:'<svg viewBox="0 0 24 24"><path d="M5 20c0-9 6-15 15-15 0 9-6 15-15 15z"/><path d="M5 20l7.5-7.5"/></svg>',
+ cal:'<svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',
+ more:'<svg viewBox="0 0 24 24"><circle cx="5.5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="18.5" cy="12" r="1.2"/></svg>',
+ plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>'};
 
-/* ============ Helfer ============ */
+/* ================= Helfer ================= */
 const $=(s,r=document)=>r.querySelector(s);
 const $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const z2=n=>String(n).padStart(2,'0');
 const ymd=(d=new Date())=>d.getFullYear()+'-'+z2(d.getMonth()+1)+'-'+z2(d.getDate());
-const nowLocal=()=>{const d=new Date();return ymd(d)+'T'+z2(d.getHours())+':'+z2(d.getMinutes())};
+const nowTime=()=>{const d=new Date();return z2(d.getHours())+':'+z2(d.getMinutes())};
+const nowLocal=()=>ymd()+'T'+nowTime();
 const utc=s=>{const[y,m,d]=s.slice(0,10).split('-').map(Number);return Date.UTC(y,m-1,d)};
 const dayDiff=(a,b)=>Math.round((utc(b)-utc(a))/864e5);
+const addDays=(s,n)=>new Date(utc(s)+n*864e5).toISOString().slice(0,10);
 const fmtDay=s=>new Date(s.slice(0,10)+'T12:00').toLocaleDateString('de-DE',{weekday:'short',day:'numeric',month:'short',year:s.slice(0,4)==String(new Date().getFullYear())?undefined:'numeric'});
 const fmtShort=s=>new Date(s.slice(0,10)+'T12:00').toLocaleDateString('de-DE',{day:'numeric',month:'short'});
 const num=v=>{if(v===''||v==null)return null;const n=Number(String(v).replace(',','.'));return isFinite(n)?n:null};
 const fmtN=(n,d=1)=>n==null?'–':(Math.round(n*10**d)/10**d).toLocaleString('de-DE');
 const ago=s=>{const d=dayDiff(s,ymd());return d<=0?'heute':d==1?'gestern':'vor '+d+' Tagen'};
+const agoT=s=>s.slice(0,10)===ymd()?'heute '+s.slice(11,16):ago(s);
+const byName=(a,b)=>(a.name||'').localeCompare(b.name||'','de',{numeric:true});
+const byDate=(a,b)=>b.date.localeCompare(a.date);
+const nf=(n,l,v,ph='')=>`<label class="field"><span>${l}</span><input name="${n}" type="number" inputmode="decimal" step="any" value="${v??''}" placeholder="${ph}"></label>`;
 
-/* ============ Speicher (IndexedDB, lokal auf dem Gerät) ============ */
+/* ================= Speicher (IndexedDB, nur auf dem Gerät) ================= */
 const mem={items:new Map(),photos:new Map()};let idb=null,storeOK=false;
 function openDB(){return new Promise((res,rej)=>{let r;try{r=indexedDB.open('growbuch',1)}catch(e){return rej(e)}
  r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains('items'))d.createObjectStore('items',{keyPath:'id'});if(!d.objectStoreNames.contains('photos'))d.createObjectStore('photos')};
  r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
 function req(store,mode,op){return new Promise((res,rej)=>{if(!idb)return res(undefined);try{const r=op(idb.transaction(store,mode).objectStore(store));r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)}catch(e){rej(e)}})}
 async function initStore(){
- try{idb=await openDB();const all=await req('items','readonly',s=>s.getAll());(all||[]).forEach(o=>mem.items.set(o.id,o));storeOK=true;
+ try{idb=await openDB();const a=await req('items','readonly',s=>s.getAll());(a||[]).forEach(o=>mem.items.set(o.id,o));storeOK=true;
   try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
  }catch(e){idb=null;storeOK=false}
 }
@@ -219,318 +268,464 @@ const urlCache=new Map();
 async function photoURL(id){if(urlCache.has(id))return urlCache.get(id);const b=await getPhoto(id);if(!b)return'';const u=URL.createObjectURL(b);urlCache.set(id,u);return u}
 function hydrate(root=document){$$('img[data-ph]',root).forEach(async im=>{const u=await photoURL(im.dataset.ph);if(u)im.src=u;else im.remove()})}
 const img=(id,attrs='')=>id?`<img data-ph="${esc(id)}" alt="" ${attrs}>`:'';
-
-/* Bilder verkleinern, damit der Speicher reicht */
 function shrink(file,max=1600,q=.82){return new Promise((res,rej)=>{const u=URL.createObjectURL(file);const im=new Image();
  im.onload=()=>{const s=Math.min(1,max/Math.max(im.naturalWidth,im.naturalHeight));const c=document.createElement('canvas');c.width=Math.round(im.naturalWidth*s);c.height=Math.round(im.naturalHeight*s);
   c.getContext('2d').drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);c.toBlob(b=>b?res(b):rej(new Error('Bild')),'image/jpeg',q)};
  im.onerror=()=>{URL.revokeObjectURL(u);rej(new Error('Bild konnte nicht gelesen werden'))};im.src=u})}
+/* Daten aus der ersten Version (Grows) übernehmen */
+function migrate(){for(const o of [...mem.items.values()]){
+ if(o.type==='grow'){o.type='env';o.kind='grow';o.size=o.size||o.space||'';put(o)}
+ else if(o.type==='entry'){o.type='log';o.envId=o.growId;o.acts=(o.acts||[]).map(a=>a==='training'?'train':a);put(o)}
+ else if((o.type==='plant'||o.type==='task')&&o.growId&&o.envId===undefined){o.envId=o.growId;if(o.type==='plant'&&o.phases&&o.phases.done)o.archived=true;put(o)}}}
 
-/* ============ Datenzugriff ============ */
+/* ================= Datenzugriff ================= */
 const all=t=>[...mem.items.values()].filter(o=>o.type===t);
-const get=id=>mem.items.get(id);
-const grows=()=>all('grow').sort((a,b)=>(b.start||'').localeCompare(a.start||''));
-const plantsOf=gid=>all('plant').filter(p=>p.growId===gid).sort((a,b)=>(a.created||'').localeCompare(b.created||''));
-const entriesOf=gid=>all('entry').filter(e=>e.growId===gid).sort((a,b)=>b.date.localeCompare(a.date));
-const entriesOfPlant=pid=>all('entry').filter(e=>(e.plantIds||[]).includes(pid)).sort((a,b)=>b.date.localeCompare(a.date));
-const tasksOf=gid=>all('task').filter(t=>t.growId===gid);
-const growDay=(g,at=ymd())=>dayDiff(g.start||ymd(),at)+1;
-function curPhase(p){for(let i=PHASES.length-1;i>=0;i--)if(p.phases&&p.phases[PHASES[i].k])return PHASES[i];return PHASES[0]}
-function plantStart(p){for(const ph of PHASES)if(p.phases&&p.phases[ph.k])return p.phases[ph.k];return (p.created||ymd()).slice(0,10)}
-function plantAge(p){const end=(p.phases&&(p.phases.drying||p.phases.done))||ymd();const d=Math.max(0,dayDiff(plantStart(p),end));const ph=curPhase(p);
- const pd=Math.max(0,dayDiff((p.phases&&p.phases[ph.k])||plantStart(p),ymd()));return{day:d+1,week:Math.floor(d/7)+1,ph,pday:pd+1,pweek:Math.floor(pd/7)+1}}
-function photosOf(list){const out=[];list.forEach(e=>(e.photos||[]).forEach(id=>out.push({id,date:e.date,growId:e.growId})));return out}
-function coverOf(gid){const e=entriesOf(gid).find(e=>e.photos&&e.photos.length);return e?e.photos[0]:null}
-function plantCover(pid){const e=entriesOfPlant(pid).find(e=>e.photos&&e.photos.length);return e?e.photos[0]:null}
+const get=id=>id?mem.items.get(id):undefined;
+const envs=()=>all('env').sort((a,b)=>(a.kind==='dry')-(b.kind==='dry')||(a.order??0)-(b.order??0)||byName(a,b));
+const dryEnvs=()=>envs().filter(e=>e.kind==='dry');
+const activePlants=()=>all('plant').filter(p=>!p.archived);
+const plantsIn=id=>activePlants().filter(p=>p.envId===id).sort(byName);
+const jarPlants=()=>activePlants().filter(p=>!p.envId).sort(byName);
+const logsOfEnv=id=>all('log').filter(l=>l.envId===id).sort(byDate);
+const logsOfPlant=id=>all('log').filter(l=>(l.plantIds||[]).includes(id)).sort(byDate);
+const mixes=()=>all('mix').sort(byName);
+function plantStart(p){const ds=Object.values(p.phases||{}).filter(Boolean).sort();return ds[0]||(p.created||ymd()).slice(0,10)}
+function phaseAt(p,d){let cur=null;for(const x of PHASES)if(p.phases&&p.phases[x.k]&&p.phases[x.k]<=d)cur=x;if(cur)return cur;for(const x of PHASES)if(p.phases&&p.phases[x.k])return x;return PHASES[0]}
+const curPhase=p=>phaseAt(p,ymd());
+function ageAt(p,d=ymd()){const end=p.archived&&p.phases&&p.phases.done&&p.phases.done<d?p.phases.done:d;const start=plantStart(p),ph=phaseAt(p,end);
+ const stop=p.phases&&p.phases.drying&&p.phases.drying<=end?p.phases.drying:end;const age=Math.max(0,dayDiff(start,stop))+1;const pd=Math.max(0,dayDiff((p.phases&&p.phases[ph.k])||start,end))+1;
+ return{age,week:Math.ceil(age/7),ph,pday:pd,pweek:Math.ceil(pd/7)}}
+const lastLog=(p,act)=>logsOfPlant(p.id).find(l=>(l.acts||[]).includes(act));
+function photosOf(list){const out=[];list.forEach(l=>(l.photos||[]).forEach(id=>out.push({id,date:l.date})));return out}
+function plantCover(pid){const l=logsOfPlant(pid).find(l=>l.photos&&l.photos.length);return l?l.photos[0]:null}
+function envCover(eid){const l=logsOfEnv(eid).find(l=>l.photos&&l.photos.length);return l?l.photos[0]:null}
 function vpd(t,rh){if(t==null||rh==null)return null;const svp=x=>.6108*Math.exp(17.27*x/(x+237.3));return Math.max(0,svp(t-2)-svp(t)*rh/100)}
-function harvestOf(gid){let wet=0,dry=0;entriesOf(gid).forEach(e=>{if(e.harvest){wet+=e.harvest.wet||0;dry+=e.harvest.dry||0}});return{wet,dry}}
-function nutrientNames(){const s=new Set();all('entry').forEach(e=>(e.nutrients||[]).forEach(n=>n.name&&s.add(n.name)));return[...s].sort()}
+function nutrientNames(){const s=new Set();all('log').forEach(l=>(l.nutrients||[]).forEach(n=>n.name&&s.add(n.name)));mixes().forEach(m=>(m.items||[]).forEach(n=>n.name&&s.add(n.name)));return[...s].sort()}
+function envPhase(e){if(e.kind==='dry')return'drying';const c={};plantsIn(e.id).forEach(p=>{const k=curPhase(p).k;if(k==='drying'||k==='curing')return;c[k]=(c[k]||0)+1});let b=null;for(const k in c)if(!b||c[k]>c[b])b=k;return b}
+function climateCheck(t,h,phase){const tg=TARGET[phase],v=vpd(t,h),iss=[];if(!tg)return{tg,v,iss};
+ if(t!=null){if(t<tg.t[0])iss.push('zu kalt');else if(t>tg.t[1])iss.push('zu warm')}
+ if(h!=null){if(h<tg.h[0])iss.push('RLF zu niedrig');else if(h>tg.h[1])iss.push('RLF zu hoch')}
+ if(tg.v&&v!=null&&!iss.length){if(v<tg.v[0])iss.push('VPD niedrig');else if(v>tg.v[1])iss.push('VPD hoch')}return{tg,v,iss}}
+function lastClimate(e){return logsOfEnv(e.id).find(l=>l.env&&(l.env.temp!=null||l.env.rh!=null))}
+function statusHTML(t,h,phase){const c=climateCheck(t,h,phase);if(!c.tg)return'';return c.iss.length?`<span class="st bad">⚠︎ ${c.iss.join(', ')}</span>`:`<span class="st ok">✓ Im Zielbereich (${PH[phase].l})</span>`}
+function targetText(phase){const tg=TARGET[phase];if(!tg)return'';return `Ziel ${PH[phase].l}: ${tg.t[0]}–${tg.t[1]} °C · ${tg.h[0]}–${tg.h[1]} %${tg.v?' · VPD '+fmtN(tg.v[0])+'–'+fmtN(tg.v[1]):''}`}
+function climLine(e){const l=lastClimate(e);if(!l)return `<div class="clim muted">🌡️ Noch kein Klima eingetragen</div>`;
+ const t=l.env.temp,h=l.env.rh,v=vpd(t,h);const parts=[t!=null?fmtN(t)+' °C':null,h!=null?fmtN(h,0)+' %':null,v!=null&&e.kind!=='dry'?'VPD '+fmtN(v,2):null].filter(Boolean).join(' · ');
+ const st=statusHTML(t,h,envPhase(e));return `<div class="clim">🌡️ <b>${parts}</b> <span class="muted small">${agoT(l.date)}</span>${st?'<br>'+st:''}</div>`}
 
-/* ============ Navigation ============ */
-let R={v:'home'};const hist=[];
-function go(r){hist.push(R);R=r;render();window.scrollTo(0,0)}
-function back(){R=hist.pop()||{v:'home'};render()}
+/* ================= Navigation ================= */
+const ROOTS=['today','garden','cal','more'];
+let R={v:'today'},stack=[];
+function tab(v){stack=[];R={v};render();window.scrollTo(0,0)}
+function go(r){stack.push(R);R=r;render();window.scrollTo(0,0)}
+function back(){R=stack.pop()||{v:'today'};render()}
+const rootOf=()=>ROOTS.includes(R.v)?R.v:((stack.find(s=>ROOTS.includes(s.v))||{v:'garden'}).v);
 const charts=[];
 function render(){
- charts.splice(0).forEach(c=>{try{c.destroy()}catch(e){}});
- const app=$('#app');
- if(R.v==='grow'&&!get(R.id))R={v:'home'};
- if(R.v==='plant'&&!get(R.id))R={v:'home'};
- app.innerHTML=R.v==='grow'?vGrow():R.v==='plant'?vPlant():R.v==='settings'?vSettings():vHome();
- hydrate(app);
+ charts.splice(0).forEach(c=>{try{c.destroy()}catch(e){}});window._cd=null;
+ if((R.v==='env'||R.v==='plant')&&!get(R.id))R=stack.pop()||{v:'today'};
+ const V={today:vToday,garden:vGarden,cal:vCal,more:vMore,env:vEnv,plant:vPlant,mixes:vMixes,archive:vArchive}[R.v]||vToday;
+ const app=$('#app');app.innerHTML=V()+tabbar();hydrate(app);
  if(R.after){const f=R.after;R.after=null;f()}
- if((R.v==='grow'||R.v==='plant')&&R.tab==='stats')drawCharts();
+ if(window._cd)drawCharts();
 }
+function tabbar(){const r=rootOf(),T=(k,l,svg)=>`<button class="tb ${r===k?'on':''}" onclick="tab('${k}')">${svg}<span>${l}</span></button>`;
+ return `<nav class="tabbar">${T('today','Heute',IC.home)}${T('garden','Garten',IC.leaf)}<button class="tbplus" onclick="plusMenu()" aria-label="Neuer Eintrag">${IC.plus}</button>${T('cal','Kalender',IC.cal)}${T('more','Mehr',IC.more)}</nav>`}
+const head=(title,menu)=>`<header class="top"><button class="ib" onclick="back()" aria-label="Zurück">‹</button><div class="ttl">${esc(title)}</div>${menu?`<button class="ib" onclick="${menu}" aria-label="Menü">⋯</button>`:'<span class="ib"></span>'}</header>`;
+const bighead=(title,sub,right='')=>`<header class="top big"><div class="ttl">${title}${sub?`<div class="sub">${sub}</div>`:''}</div>${right}</header>`;
+const tabs=(list,on)=>`<div class="tabs">${list.map(([k,l])=>`<button class="tab ${k==on?'on':''}" onclick="R.tab='${k}';render()">${l}</button>`).join('')}</div>`;
+function ctx(){if(R.v==='env')return{envId:R.id};if(R.v==='plant'){const p=get(R.id);return{envId:p.envId,plantIds:[p.id]}}return{}}
 
-/* ============ Home ============ */
-function vHome(){
- const gs=grows(),active=gs.filter(g=>!g.archived),arch=gs.filter(g=>g.archived);
- const due=all('task').filter(t=>!t.done&&t.due&&t.due<=ymd()&&get(t.growId)&&!get(t.growId).archived).sort((a,b)=>a.due.localeCompare(b.due));
- let h=`<header class="top big"><div class="ttl">Grow with Jonny</div><button class="ib" onclick="go({v:'settings'})" aria-label="Einstellungen">⚙︎</button></header><div class="wrap">`;
- if(!storeOK)h+=`<div class="banner">Speichern ist in dieser Ansicht nicht möglich. Öffne die App in Safari und installiere sie (Teilen → „Zum Home-Bildschirm“), dann bleiben deine Daten erhalten.</div>`;
- if(!gs.length)h+=`<div class="empty"><div class="big">🌱</div><div style="font-size:20px;font-weight:700;color:var(--text)">Dein erster Grow</div><p>Leg einen Grow an, füge Pflanzen hinzu und dokumentiere jeden Tag: Gießen, Dünger, Klima, Training und Fotos.</p><button class="btn primary" onclick="editGrow()">Grow anlegen</button></div>`;
- if(due.length){h+=`<div class="h2">Heute fällig</div>`+due.map(taskRow).join('')}
- if(active.length)h+=`<div class="h2">Aktive Grows</div>`+active.map(growCard).join('');
- if(arch.length)h+=`<div class="h2">Archiv</div>`+arch.map(growCard).join('');
- h+=`</div>`;
- if(gs.length)h+=`<button class="fab" onclick="editGrow()"><b>+</b> Grow</button>`;
- return h;
-}
-function phasePills(plants){const c={};plants.forEach(p=>{const k=curPhase(p).k;c[k]=(c[k]||0)+1});
- return PHASES.filter(p=>c[p.k]).map(p=>`<span class="pill"><i style="background:${p.c}"></i>${c[p.k]}× ${p.l}</span>`).join('')}
-function growCard(g){const ps=plantsOf(g.id),es=entriesOf(g.id),cov=coverOf(g.id);
- return `<button class="gcard" onclick="go({v:'grow',id:'${g.id}',tab:'log'})"><div class="gcover">${cov?img(cov):'🪴'}<span class="daytag">${g.archived?'Abgeschlossen':'Tag '+growDay(g)+' · Woche '+Math.ceil(growDay(g)/7)}</span></div>
- <div class="gbody"><div class="gname">${esc(g.name)}</div><div class="muted small">${[g.env,g.medium,g.light].filter(Boolean).map(esc).join(' · ')}</div>
- <div class="pills">${phasePills(ps)}<span class="pill">${ps.length} Pflanze${ps.length==1?'':'n'}</span>${es.length?`<span class="pill">Letzter Eintrag ${ago(es[0].date)}</span>`:''}</div></div></button>`}
+/* ================= Heute ================= */
+function vToday(){
+ const es=envs();const open=all('task').filter(t=>!t.done);
+ const due=open.filter(t=>!t.due||t.due<=ymd()).sort((a,b)=>(a.due||'').localeCompare(b.due||''));
+ const soon=open.filter(t=>t.due&&t.due>ymd()&&t.due<=addDays(ymd(),3)).sort((a,b)=>a.due.localeCompare(b.due));
+ const recent=all('log').sort(byDate).slice(0,5);
+ let h=bighead('Heute',new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'}))+`<div class="wrap">`;
+ if(!storeOK)h+=`<div class="banner">Speichern ist in dieser Ansicht nicht möglich. Öffne die App in Safari und lege sie auf den Home-Bildschirm.</div>`;
+ if(!es.length)return h+setupCard()+`</div>`;
+ h+=`<div class="h2">Aufgaben<button onclick="editTask()">+ Erinnerung</button></div>`;
+ h+=due.length?due.map(taskRow).join(''):`<div class="card muted small">✓ Heute ist nichts fällig.</div>`;
+ if(soon.length)h+=`<div class="muted small" style="margin:10px 4px 6px">Demnächst</div>`+soon.map(taskRow).join('');
+ h+=`<div class="h2">Deine Zelte</div>`+es.map(e=>envCard(e,false)).join('');
+ const jars=jarPlants();if(jars.length)h+=`<div class="card small">🫙 <b>${jars.length}</b> im Glas (Curing) · <button style="color:var(--accent)" onclick="tab('garden')">ansehen</button></div>`;
+ if(recent.length)h+=`<div class="h2">Zuletzt</div>`+timeline(recent,'all');
+ return h+`</div>`}
+function setupCard(){return `<div class="card" style="text-align:center;margin-top:10px"><div style="font-size:38px">⛺ ⛺ ⛺ 🍂</div><div style="font-size:20px;font-weight:700;margin-top:6px">Richte dein Setup ein</div><p class="muted small">Ein Tipp legt deine drei Growzelte und das Trockenzelt an. Größe, Licht und Medium trägst du danach beim jeweiligen Zelt ein.</p><button class="btn primary block" onclick="quickSetup()">3 Zelte + Trockenzelt anlegen</button><button class="btn block" style="margin-top:8px" onclick="editEnv()">Zelt einzeln anlegen</button></div>`}
+function quickSetup(){const t=new Date().toISOString();['Zelt 1','Zelt 2','Zelt 3'].forEach((n,i)=>put({id:uid(),type:'env',kind:'grow',name:n,schedule:'18/6',order:i,created:t}));
+ put({id:uid(),type:'env',kind:'dry',name:'Trockenzelt',order:9,created:t});toast('Setup angelegt – jetzt Pflanzen hinzufügen');tab('garden')}
 
-/* ============ Grow ============ */
-function vGrow(){
- const g=get(R.id),ps=plantsOf(g.id),es=entriesOf(g.id),cov=coverOf(g.id),hv=harvestOf(g.id);const tab=R.tab||'log';
- let h=`<header class="top"><button class="ib" onclick="back()">‹</button><div class="ttl">${esc(g.name)}</div><button class="ib" onclick="growMenu()">⋯</button></header><div class="wrap">
- <div class="hero">${cov?img(cov):'🪴'}</div>
- <div class="stats"><div class="stat"><b>${growDay(g)}</b><span>Tag</span></div><div class="stat"><b>${ps.length}</b><span>Pflanzen</span></div><div class="stat"><b>${es.length}</b><span>Einträge</span></div><div class="stat"><b>${hv.dry?fmtN(hv.dry,0):'–'}</b><span>g trocken</span></div></div>
- <div class="pills" style="margin-top:12px">${[g.env,g.medium,g.light,g.watt?g.watt+' W':'',g.space].filter(Boolean).map(x=>`<span class="pill">${esc(x)}</span>`).join('')}<span class="pill">Start ${fmtShort(g.start)}</span></div>`;
- if(!g.archived)h+=`<div class="quick">${['water','feed','env','photo'].map(k=>`<button onclick="editEntry({growId:'${g.id}',acts:['${k}']})"><span>${k=='photo'?'📷':ACT[k].i}</span>${k=='photo'?'Foto':ACT[k].l}</button>`).join('')}</div>`;
- h+=tabs([['log','Tagebuch'],['plants','Pflanzen'],['gallery','Galerie'],['stats','Statistik'],['tasks','Aufgaben']],tab);
- if(tab==='log')h+=timeline(es,g);
- if(tab==='plants'){h+=`<div style="margin-top:14px">`+(ps.length?ps.map(plantCard).join(''):`<div class="empty">Noch keine Pflanzen.</div>`)+`</div><button class="btn block" onclick="editPlant(null,'${g.id}')">+ Pflanze hinzufügen</button>`}
- if(tab==='gallery')h+=gallery(photosOf(es),g);
- if(tab==='stats')h+=statsView(g,es,ps);
- if(tab==='tasks')h+=tasksView(g);
- h+=`</div>`;
- if(!g.archived)h+=`<button class="fab" onclick="editEntry({growId:'${g.id}'})"><b>+</b> Eintrag</button>`;
- return h;
-}
-function tabs(list,on){return `<div class="tabs">${list.map(([k,l])=>`<button class="tab ${k==on?'on':''}" onclick="R.tab='${k}';render()">${l}</button>`).join('')}</div>`}
-function plantCard(p){const a=plantAge(p),cov=plantCover(p.id);
- return `<button class="pcard" onclick="go({v:'plant',id:'${p.id}',tab:'log'})"><div class="pthumb">${cov?img(cov):a.ph.i}</div><div class="grow1"><div class="pname">${esc(p.name)}</div><div class="muted small">${esc(p.strain||'Unbekannte Sorte')}${p.breeder?' · '+esc(p.breeder):''}</div>
- <div class="pills"><span class="pill"><i style="background:${a.ph.c}"></i>${a.ph.l} · Tag ${a.pday}</span><span class="pill">Tag ${a.day} · W${a.week}</span></div></div><span class="muted">›</span></button>`}
-function timeline(es,g){
- if(!es.length)return `<div class="empty"><div class="big">📓</div>Noch keine Einträge. Tippe auf „+ Eintrag“ oder nutze die Schnellaktionen.</div>`;
- let h='',last='';
- es.forEach(e=>{const d=e.date.slice(0,10);if(d!==last){last=d;const gg=get(e.growId);const gd=gg?growDay(gg,d):0;h+=`<div class="dayhead"><b>${fmtDay(d)}</b><span>${gd>0?'Tag '+gd+' · Woche '+Math.ceil(gd/7):gg?'vor Start':''}</span></div>`}h+=entryCard(e)});
- return h;
-}
-function entryLines(e){const L=[];const k=(a)=>`<span class="k">${a}</span>`;
- if(e.water){const w=e.water,p=[];if(w.amount!=null)p.push(fmtN(w.amount,2)+' L');if(w.ph!=null)p.push('pH '+fmtN(w.ph,2));if(w.ec!=null)p.push('EC '+fmtN(w.ec,2));if(w.temp!=null)p.push(fmtN(w.temp)+' °C');
-  if(w.rph!=null||w.rec!=null)p.push(k('Runoff')+' '+[w.rph!=null?'pH '+fmtN(w.rph,2):'',w.rec!=null?'EC '+fmtN(w.rec,2):''].filter(Boolean).join(' '));L.push('💧 '+(p.join(' · ')||'Gegossen'))}
- if(e.nutrients&&e.nutrients.length)L.push('🧪 '+e.nutrients.map(n=>esc(n.name)+(n.dose!=null?' '+k(fmtN(n.dose,2)+' ml/L'):'')).join(', '));
- if(e.env){const v=e.env,p=[];if(v.temp!=null)p.push(fmtN(v.temp)+' °C');if(v.rh!=null)p.push(fmtN(v.rh,0)+' % RLF');const vp=vpd(v.temp,v.rh);if(vp!=null)p.push('VPD '+fmtN(vp,2)+' kPa');if(v.light!=null)p.push(fmtN(v.light,1)+' h Licht');if(v.ppfd!=null)p.push(fmtN(v.ppfd,0)+' PPFD');if(v.co2!=null)p.push(fmtN(v.co2,0)+' ppm CO₂');if(v.dist!=null)p.push('Abstand '+fmtN(v.dist,0)+' cm');if(p.length)L.push('🌡️ '+p.join(' · '))}
- if(e.height!=null)L.push('📏 Höhe '+fmtN(e.height)+' cm');
- if(e.training&&e.training.length)L.push('✂️ '+e.training.map(esc).join(', '));
- if(e.phase)L.push('🔄 Phase → <b>'+(PH[e.phase]?PH[e.phase].l:esc(e.phase))+'</b>');
- if(e.problems&&e.problems.length)L.push('🐛 '+e.problems.map(esc).join(', '));
- if(e.harvest){const p=[];if(e.harvest.wet)p.push('nass '+fmtN(e.harvest.wet,0)+' g');if(e.harvest.dry)p.push('trocken '+fmtN(e.harvest.dry,0)+' g');if(p.length)L.push('⚖️ '+p.join(' · '))}
- return L}
-function entryIcons(e){return (e.acts||[]).map(a=>ACT[a]?ACT[a].i:'').join('')+((e.photos||[]).length?'📷':'')+(e.note?'📝':'')}
-function entryCard(e){const ps=(e.plantIds||[]).map(get).filter(Boolean);
- return `<button class="entry" onclick="editEntry(get('${e.id}'))"><div class="etop"><span class="etime">${e.date.slice(11,16)}</span><span class="eicons">${entryIcons(e)}</span><span class="grow1"></span>${R.v==='grow'?`<span class="plist">${ps.length&&ps.length===plantsOf(e.growId).length&&ps.length>1?'<span class="pill">Alle Pflanzen</span>':ps.map(p=>`<span class="pill">${esc(p.name)}</span>`).join('')}</span>`:''}</div>
- ${entryLines(e).map(l=>`<div class="eline">${l}</div>`).join('')}${e.note?`<div class="enote">${esc(e.note)}</div>`:''}
- ${(e.photos||[]).length?`<div class="strip">${e.photos.map(id=>img(id)).join('')}</div>`:''}</button>`}
-function gallery(list,g){
- if(!list.length)return `<div class="empty"><div class="big">📷</div>Noch keine Fotos.</div>`;
- window._lb=list.map(p=>({id:p.id,cap:fmtDay(p.date)+(get(p.growId)?' · Tag '+growDay(get(p.growId),p.date.slice(0,10)):'')}));
- return `<div style="height:14px"></div><div class="gallery">${list.map((p,i)=>`<button onclick="lightbox(window._lb,${i})">${img(p.id,'loading="lazy"')}<span>T${get(p.growId)?growDay(get(p.growId),p.date.slice(0,10)):''}</span></button>`).join('')}</div>`}
+/* ================= Garten ================= */
+function vGarden(){const es=envs(),jars=jarPlants();
+ let h=bighead('Garten',es.length?`${es.length} Zelte · ${activePlants().length} Pflanzen`:'')+`<div class="wrap">`;
+ if(!es.length)return h+setupCard()+`</div>`;
+ h+=es.map(e=>envCard(e,true)).join('');
+ if(jars.length)h+=`<div class="ecard"><div class="ename">🫙 Gläser (Curing)</div><div class="muted small">${jars.length} Pflanze${jars.length>1?'n':''} im Glas</div><div class="pstrip">${jars.map(plantMini).join('')}</div></div>`;
+ return h+`<button class="btn block" onclick="editEnv()">+ Zelt hinzufügen</button></div>`}
+function phasePills(ps){const c={},d={};ps.forEach(p=>{const a=ageAt(p),k=a.ph.k;c[k]=(c[k]||0)+1;d[k]=Math.max(d[k]||0,a.pday)});
+ return PHASES.filter(x=>c[x.k]).map(x=>`<span class="pill"><i style="background:${x.c}"></i>${c[x.k]}× ${x.l} · T${d[x.k]}</span>`).join('')}
+function envMeta(e){const dry=e.kind==='dry';return[dry&&!/trocken/i.test(e.name||'')?'Trockenzelt':null,e.size,!dry&&e.schedule?'☀️ '+e.schedule:null,e.light?e.light+(e.watt?' '+e.watt+' W':''):null,e.medium].filter(Boolean).map(esc).join(' · ')}
+function envQuick(e){const dry=e.kind==='dry';return `<div class="eqa">${dry?'':`<button onclick="editLog({envId:'${e.id}',acts:['water']})">💧 Gießen</button><button onclick="editLog({envId:'${e.id}',acts:['feed']})">🧪 Düngen</button>`}<button onclick="quickClimate('${e.id}')">🌡️ Klima</button><button onclick="editLog({envId:'${e.id}',acts:['photo']})">📷 Foto</button>${dry?`<button onclick="editLog({envId:'${e.id}'})">📝 Notiz</button>`:''}</div>`}
+function envCard(e,full){const ps=plantsIn(e.id),dry=e.kind==='dry';
+ let h=`<div class="ecard"><button class="ehead" onclick="go({v:'env',id:'${e.id}',tab:'plants'})"><div class="grow1"><div class="ename">${dry?'🍂':'⛺'} ${esc(e.name)}</div><div class="muted small">${envMeta(e)||'Tippen zum Einrichten'}</div></div><span class="muted">›</span></button>
+ <div class="pills">${phasePills(ps)}${ps.length?'':`<span class="pill">${dry?'Leer':'Keine Pflanzen'}</span>`}</div>${climLine(e)}${envQuick(e)}`;
+ if(full&&(ps.length||!dry))h+=`<div class="pstrip">${ps.map(plantMini).join('')}${dry?'':`<button class="pmini add" onclick="editPlant(null,'${e.id}')"><div class="pthumb">＋</div><div class="pmname">Pflanze</div></button>`}</div>`;
+ return h+`</div>`}
+function plantMini(p){const a=ageAt(p),cov=plantCover(p.id);
+ return `<button class="pmini" onclick="go({v:'plant',id:'${p.id}',tab:'log'})"><div class="pthumb">${cov?img(cov):a.ph.i}</div><div class="pmname">${esc(p.name)}</div><div class="pmsub">${a.ph.i} ${a.ph.l} T${a.pday}</div></button>`}
+function plantCard(p){const a=ageAt(p),cov=plantCover(p.id),lw=lastLog(p,'water'),k=a.ph.k;
+ const extra=k==='drying'?(p.wet?`<span class="pill">${fmtN(p.wet,0)} g nass</span>`:''):k==='curing'?(p.dry?`<span class="pill">${fmtN(p.dry,0)} g trocken</span>`:''):`<span class="pill">Alter ${a.age} T</span>${lw?`<span class="pill">💧 ${ago(lw.date)}</span>`:''}`;
+ return `<button class="pcard" onclick="go({v:'plant',id:'${p.id}',tab:'log'})"><div class="pthumb">${cov?img(cov):a.ph.i}</div><div class="grow1"><div class="pname">${esc(p.name)}</div><div class="muted small">${esc(p.strain||'Sorte unbekannt')}${p.breeder?' · '+esc(p.breeder):''}</div><div class="pills"><span class="pill"><i style="background:${a.ph.c}"></i>${a.ph.l} · Tag ${a.pday}</span>${extra}</div></div><span class="muted">›</span></button>`}
 
-/* ============ Statistik ============ */
-function statsView(g,es,ps){
- const waters=es.filter(e=>e.water),waterL=waters.reduce((s,e)=>s+(e.water.amount||0),0),hv=harvestOf(g.id);
- const gpw=hv.dry&&g.watt?hv.dry/g.watt:null;
- let h=`<div style="height:14px"></div><div class="tiles">
- <div class="tile"><b>${waters.length}</b><span>Gießvorgänge</span></div><div class="tile"><b>${fmtN(waterL,1)} L</b><span>Wasser gesamt</span></div>
- <div class="tile"><b>${hv.dry?fmtN(hv.dry,0)+' g':'–'}</b><span>Ernte trocken${hv.wet?' (nass '+fmtN(hv.wet,0)+' g)':''}</span></div><div class="tile"><b>${gpw!=null?fmtN(gpw,2):'–'}</b><span>g pro Watt</span></div></div>`;
- if(!window.Chart)return h+`<div class="card muted small" style="margin-top:10px">Diagramme brauchen beim ersten Start eine Internetverbindung.</div>`;
- const defs=chartDefs(g,es,ps);
- if(!defs.length)return h+`<div class="empty">Sobald du pH, EC, Klima oder Höhe einträgst, erscheinen hier Verläufe.</div>`;
- window._cd=defs;
- return h+defs.map((d,i)=>`<div class="chartcard"><h3>${d.title}</h3><div class="chartbox"><canvas id="ch${i}" role="img" aria-label="${esc(d.title)}"></canvas></div></div>`).join('');
-}
-function chartDefs(g,es,ps){
- const asc=[...es].reverse(),day=e=>growDay(g,e.date.slice(0,10));
- const ser=(label,f,ci=0)=>({label,data:asc.map(e=>({x:day(e),y:f(e)})).filter(p=>p.y!=null),color:SERIES[ci]});
- const defs=[],add=(title,unit,sets,type='line')=>{sets=sets.filter(s=>s.data.length);if(sets.length)defs.push({title,unit,sets,type})};
- add('pH','',[ser('Gießwasser',e=>e.water&&e.water.ph,0),ser('Runoff',e=>e.water&&e.water.rph,1)]);
- add('EC (mS/cm)','mS/cm',[ser('Gießwasser',e=>e.water&&e.water.ec,0),ser('Runoff',e=>e.water&&e.water.rec,1)]);
- add('Temperatur (°C)','°C',[ser('Luft',e=>e.env&&e.env.temp,0)]);
- add('Luftfeuchte (% RLF)','%',[ser('RLF',e=>e.env&&e.env.rh,0)]);
- add('VPD (kPa)','kPa',[ser('VPD',e=>e.env?vpd(e.env.temp,e.env.rh):null,0)]);
- add('Höhe (cm)','cm',ps.map((p,i)=>({label:p.name,color:SERIES[i%SERIES.length],data:asc.filter(e=>e.height!=null&&(e.plantIds||[]).includes(p.id)).map(e=>({x:day(e),y:e.height}))})));
- const byDay={};asc.forEach(e=>{if(e.water&&e.water.amount!=null){const d=day(e);byDay[d]=(byDay[d]||0)+e.water.amount}});
- add('Wassermenge pro Tag (L)','L',[{label:'Wasser',color:SERIES[0],data:Object.entries(byDay).map(([x,y])=>({x:+x,y}))}],'bar');
- return defs}
-function drawCharts(){if(!window.Chart||!window._cd)return;const css=getComputedStyle(document.documentElement);const muted=css.getPropertyValue('--muted').trim(),grid='rgba(255,255,255,.06)',text=css.getPropertyValue('--text').trim();
- window._cd.forEach((d,i)=>{const cv=document.getElementById('ch'+i);if(!cv)return;
-  charts.push(new Chart(cv,{type:d.type,data:{datasets:d.sets.map(s=>({label:s.label,data:s.data,borderColor:s.color,backgroundColor:s.color,pointBackgroundColor:s.color,pointBorderColor:'#171e1b',pointBorderWidth:2,borderWidth:2,tension:.25,pointRadius:4,pointHoverRadius:7,borderRadius:4,barThickness:10}))},
-  options:{responsive:true,maintainAspectRatio:false,animation:false,interaction:{mode:'nearest',intersect:false},
-   scales:{x:{type:'linear',ticks:{color:muted,precision:0,callback:v=>'T'+v},grid:{color:grid},border:{color:grid}},y:{ticks:{color:muted},grid:{color:grid},border:{display:false},beginAtZero:d.type==='bar'}},
-   plugins:{legend:{display:d.sets.length>1,labels:{color:text,usePointStyle:true,boxWidth:8,boxHeight:8}},tooltip:{backgroundColor:'#0b0f0d',borderColor:'#2a3530',borderWidth:1,titleColor:text,bodyColor:text,callbacks:{title:it=>'Tag '+it[0].parsed.x,label:it=>`${it.dataset.label}: ${fmtN(it.parsed.y,2)} ${d.unit}`}}}}}))})}
+/* ================= Zelt ================= */
+function vEnv(){const e=get(R.id),ps=plantsIn(e.id),ls=logsOfEnv(e.id),dry=e.kind==='dry',t=R.tab||'plants',cov=envCover(e.id),ph=envPhase(e);
+ let h=head(e.name,'envMenu()')+`<div class="wrap"><div class="hero">${cov?img(cov):(dry?'🍂':'⛺')}</div>
+ <div class="card" style="position:relative;z-index:2;margin-top:-40px"><div class="muted small">${envMeta(e)||'Noch keine Details – über ⋯ bearbeiten'}</div><div class="pills">${phasePills(ps)}<span class="pill">${ps.length} Pflanze${ps.length==1?'':'n'}</span></div>${climLine(e)}${ph?`<div class="muted tiny" style="margin-top:4px">${targetText(ph)}${dry?' · Dauer meist 7–14 Tage':''}</div>`:''}${envQuick(e)}</div>`;
+ h+=tabs([['plants','Pflanzen'],['log','Tagebuch'],['charts','Verlauf'],['gallery','Galerie']],t);
+ if(t==='plants'){h+=`<div style="height:14px"></div>`+(ps.length?ps.map(plantCard).join(''):`<div class="empty">${dry?'Hier landen Pflanzen nach der Ernte.':'Noch keine Pflanzen in diesem Zelt.'}</div>`);
+  const fl=ps.filter(p=>curPhase(p).k==='flower');
+  if(dry){if(ps.length)h+=`<button class="btn primary block" onclick="stageFlow('curing',{envId:'${e.id}'})">🫙 Ins Glas (Curing)</button>`}
+  else{if(fl.length)h+=`<button class="btn block" style="margin-bottom:8px" onclick="stageFlow('drying',{envId:'${e.id}'})">🌾 Ernten (${fl.length})</button>`;h+=`<button class="btn block" onclick="editPlant(null,'${e.id}')">+ Pflanze hinzufügen</button>`}}
+ if(t==='log')h+=timeline(ls,'env');
+ if(t==='charts')h+=chartSection(envChartDefs(e));
+ if(t==='gallery')h+=gallery(photosOf(ls));
+ return h+`</div>`}
+async function envMenu(){const e=get(R.id);const k=await sheetMenu([['edit','Zelt bearbeiten'],['del','Zelt löschen','danger']]);
+ if(k==='edit')editEnv(e);
+ if(k==='del'){if(plantsIn(e.id).length){toast('Verschiebe oder ernte zuerst die Pflanzen in diesem Zelt');return}
+  if(!await confirmDlg(`„${esc(e.name)}“ löschen? Klima-Einträge und Fotos dieses Zelts werden mitgelöscht.`,'Löschen',true))return;
+  logsOfEnv(e.id).forEach(l=>{if(!(l.plantIds||[]).length){(l.photos||[]).forEach(delPhoto);del(l.id)}});all('task').filter(t=>t.envId===e.id).forEach(t=>{t.envId=null;put(t)});del(e.id);back()}}
 
-/* ============ Aufgaben ============ */
-function taskRow(t){const late=t.due&&t.due<ymd()&&!t.done;const g=get(t.growId);
- return `<div class="task ${t.done?'done':''}"><button class="chk ${t.done?'on':''}" onclick="toggleTask('${t.id}')" aria-label="Erledigt">${t.done?'✓':''}</button><div class="grow1"><div class="tt">${esc(t.title)}</div><div class="due ${late?'late':''}">${t.due?(late?'Überfällig · ':'')+fmtDay(t.due):'Ohne Datum'}${R.v==='home'&&g?' · '+esc(g.name):''}</div></div><button class="ib" style="color:var(--faint);font-size:16px" onclick="delTask('${t.id}')" aria-label="Löschen">✕</button></div>`}
-function tasksView(g){const ts=tasksOf(g.id).sort((a,b)=>(a.done-b.done)||(a.due||'9').localeCompare(b.due||'9'));
- return `<div style="height:14px"></div><form class="card" onsubmit="addTask(event,'${g.id}')"><input name="title" placeholder="z. B. Dünger nachkaufen, Umtopfen…" required><div class="row" style="margin-top:8px"><input type="date" name="due" value="${ymd()}" class="grow1"><button class="btn primary">Hinzufügen</button></div></form><div style="height:10px"></div>`+(ts.length?ts.map(taskRow).join(''):`<div class="empty">Keine Aufgaben.</div>`)}
-function addTask(ev,gid){ev.preventDefault();const f=new FormData(ev.target);put({id:uid(),type:'task',growId:gid,title:f.get('title').trim(),due:f.get('due')||null,done:false,created:new Date().toISOString()});render()}
-function toggleTask(id){const t=get(id);t.done=!t.done;put(t);render()}
-async function delTask(id){del(id);render()}
-
-/* ============ Pflanze ============ */
-function vPlant(){
- const p=get(R.id),g=get(p.growId),a=plantAge(p),es=entriesOfPlant(p.id),cov=plantCover(p.id);const tab=R.tab||'log';const ci=PHASES.indexOf(a.ph);
- let h=`<header class="top"><button class="ib" onclick="back()">‹</button><div class="ttl">${esc(p.name)}</div><button class="ib" onclick="plantMenu()">⋯</button></header><div class="wrap">
- <div class="hero">${cov?img(cov):a.ph.i}</div>
- <div class="stats"><div class="stat"><b>${a.day}</b><span>Tag</span></div><div class="stat"><b>${a.week}</b><span>Woche</span></div><div class="stat"><b>${a.pday}</b><span>Tag ${esc(a.ph.l)}</span></div><div class="stat"><b>${es.length}</b><span>Einträge</span></div></div>
- <div class="card" style="margin-top:12px"><div class="row"><div class="grow1"><div style="font-weight:700">${esc(p.strain||'Unbekannte Sorte')}</div><div class="muted small">${[p.breeder,p.ptype].filter(Boolean).map(esc).join(' · ')||'&nbsp;'}</div></div><span class="pill"><i style="background:${a.ph.c}"></i>${a.ph.l}</span></div>
- <div class="phasebar">${PHASES.map((x,i)=>`<div style="background:${i<=ci?x.c:''}"></div>`).join('')}</div><div class="phaselabels">${PHASES.map(x=>`<span>${x.l.slice(0,4)}</span>`).join('')}</div>
- ${ci<PHASES.length-1&&!g.archived?`<button class="btn block" style="margin-top:12px" onclick="nextPhase('${p.id}')">${PHASES[ci+1].i} Weiter zu „${PHASES[ci+1].l}“</button>`:''}</div>`;
- h+=tabs([['log','Tagebuch'],['gallery','Galerie'],['phases','Phasen'],['info','Info']],tab);
- if(tab==='log')h+=timeline(es,g);
- if(tab==='gallery')h+=gallery(photosOf(es),g);
- if(tab==='phases')h+=`<div class="card" style="margin-top:14px"><div class="muted small" style="margin-bottom:10px">Startdatum jeder Phase. Die Tage und Wochen werden daraus berechnet.</div>`+PHASES.map(x=>`<div class="row" style="margin-bottom:8px"><span style="width:26px">${x.i}</span><span class="grow1">${x.l}</span><input type="date" style="width:170px" value="${(p.phases&&p.phases[x.k])||''}" onchange="setPhaseDate('${p.id}','${x.k}',this.value)"></div>`).join('')+`</div>`;
- if(tab==='info'){const hvs=es.filter(e=>e.harvest);const dry=hvs.reduce((s,e)=>s+(e.harvest.dry||0),0);
-  h+=`<div class="card" style="margin-top:14px"><div class="kv"><span class="k">Grow</span><span>${esc(g.name)}</span><span class="k">Sorte</span><span>${esc(p.strain||'–')}</span><span class="k">Breeder</span><span>${esc(p.breeder||'–')}</span><span class="k">Typ</span><span>${esc(p.ptype||'–')}</span><span class="k">Topf</span><span>${esc(p.pot||'–')}</span><span class="k">Start</span><span>${fmtDay(plantStart(p))}</span>${dry?`<span class="k">Ernte</span><span>${fmtN(dry,0)} g trocken</span>`:''}</div>${p.notes?`<div class="enote" style="margin-top:12px">${esc(p.notes)}</div>`:''}</div>`}
- h+=`</div>`;
- if(!g.archived)h+=`<button class="fab" onclick="editEntry({growId:'${g.id}',plantIds:['${p.id}']})"><b>+</b> Eintrag</button>`;
- return h;
-}
+/* ================= Pflanze ================= */
+function vPlant(){const p=get(R.id),e=get(p.envId),a=ageAt(p),ls=logsOfPlant(p.id),cov=plantCover(p.id),t=R.tab||'log',ci=PHASES.indexOf(a.ph);
+ const where=p.archived?'📦 Archiv':e?(e.kind==='dry'?'🍂 ':'⛺ ')+esc(e.name):'🫙 Gläser';
+ let next='';
+ if(p.archived)next=`<button class="btn block" style="margin-top:12px" onclick="restorePlant('${p.id}')">Aus dem Archiv holen</button>`;
+ else if(ci<3)next=`<button class="btn block" style="margin-top:12px" onclick="nextPhase('${p.id}')">${PHASES[ci+1].i} Weiter zu „${PHASES[ci+1].l}“</button>`;
+ else if(a.ph.k==='flower')next=`<button class="btn primary block" style="margin-top:12px" onclick="stageFlow('drying',{plantIds:['${p.id}']})">🌾 Ernten</button>`;
+ else if(a.ph.k==='drying')next=`<button class="btn primary block" style="margin-top:12px" onclick="stageFlow('curing',{plantIds:['${p.id}']})">🫙 Ins Glas (Curing)</button>`;
+ else next=`<button class="btn primary block" style="margin-top:12px" onclick="finishPlant('${p.id}')">✅ Abschließen</button>`;
+ let h=head(p.name,'plantMenu()')+`<div class="wrap"><div class="hero">${cov?img(cov):a.ph.i}</div>
+ <div class="stats"><div class="stat"><b>${a.age}</b><span>Tage alt</span></div><div class="stat"><b>${a.week}</b><span>Woche</span></div><div class="stat"><b>${a.pday}</b><span>Tag ${esc(a.ph.l)}</span></div><div class="stat"><b>${ls.length}</b><span>Einträge</span></div></div>
+ <div class="card" style="margin-top:12px"><div class="row"><div class="grow1"><div style="font-weight:700">${esc(p.strain||'Sorte unbekannt')}</div><div class="muted small">${[p.breeder,p.ptype,p.pot].filter(Boolean).map(esc).join(' · ')||'&nbsp;'}</div></div>${e&&!p.archived?`<button class="pill" onclick="go({v:'env',id:'${e.id}',tab:'plants'})">${where}</button>`:`<span class="pill">${where}</span>`}</div>
+ <div class="phasebar">${PHASES.map((x,i)=>`<div style="background:${i<=ci?x.c:''}"></div>`).join('')}</div><div class="phaselabels">${PHASES.map(x=>`<span>${x.l.slice(0,4)}</span>`).join('')}</div>${next}</div>`;
+ h+=tabs([['log','Tagebuch'],['charts','Verlauf'],['gallery','Galerie'],['info','Info']],t);
+ if(t==='log')h+=timeline(ls,'plant',p);
+ if(t==='charts')h+=plantTiles(p,ls)+chartSection(plantChartDefs(p,ls));
+ if(t==='gallery')h+=gallery(photosOf(ls),p);
+ if(t==='info')h+=`<div class="card" style="margin-top:14px"><div class="kv"><span class="k">Sorte</span><span>${esc(p.strain||'–')}</span><span class="k">Breeder</span><span>${esc(p.breeder||'–')}</span><span class="k">Typ</span><span>${esc(p.ptype||'–')}</span><span class="k">Topf</span><span>${esc(p.pot||'–')}</span><span class="k">Ort</span><span>${where}</span>${p.wet?`<span class="k">Nass</span><span>${fmtN(p.wet,0)} g</span>`:''}${p.dry?`<span class="k">Trocken</span><span>${fmtN(p.dry,0)} g</span>`:''}</div>${p.notes?`<div class="enote" style="margin-top:12px">${esc(p.notes)}</div>`:''}</div>
+ <div class="h2">Phasen</div><div class="card"><div class="muted small" style="margin-bottom:10px">Startdatum jeder Phase. Tage und Wochen werden daraus berechnet.</div>${PHASES.map(x=>`<div class="row" style="margin-bottom:8px"><span style="width:26px">${x.i}</span><span class="grow1">${x.l}</span><input type="date" style="width:168px" value="${(p.phases&&p.phases[x.k])||''}" onchange="setPhaseDate('${p.id}','${x.k}',this.value)"></div>`).join('')}</div>`;
+ return h+`</div>`}
 function setPhaseDate(pid,k,v){const p=get(pid);p.phases=p.phases||{};if(v)p.phases[k]=v;else delete p.phases[k];put(p);toast('Gespeichert')}
 async function nextPhase(pid){const p=get(pid),ci=PHASES.indexOf(curPhase(p)),nx=PHASES[ci+1];if(!nx)return;
  if(!await confirmDlg(`${esc(p.name)} ab heute in „${nx.l}“?`,'Phase wechseln'))return;
  p.phases=p.phases||{};p.phases[nx.k]=ymd();put(p);
- put({id:uid(),type:'entry',growId:p.growId,plantIds:[p.id],date:nowLocal(),acts:['phase'],phase:nx.k,photos:[],created:new Date().toISOString()});render()}
-
-/* ============ Menüs ============ */
-async function growMenu(){const g=get(R.id);const k=await sheetMenu([['edit','Grow bearbeiten'],['arch',g.archived?'Wieder aktivieren':'Grow abschließen (archivieren)'],['del','Grow löschen','danger']]);
- if(k==='edit')editGrow(g);
- if(k==='arch'){g.archived=!g.archived;put(g);render()}
- if(k==='del'&&await confirmDlg(`„${esc(g.name)}“ mit allen Pflanzen, Einträgen und Fotos endgültig löschen?`,'Löschen',true)){
-  for(const e of entriesOf(g.id)){(e.photos||[]).forEach(delPhoto);del(e.id)}plantsOf(g.id).forEach(p=>del(p.id));tasksOf(g.id).forEach(t=>del(t.id));del(g.id);R={v:'home'};hist.length=0;render()}}
-async function plantMenu(){const p=get(R.id);const k=await sheetMenu([['edit','Pflanze bearbeiten'],['del','Pflanze löschen','danger']]);
+ put({id:uid(),type:'log',envId:p.envId,plantIds:[p.id],date:nowLocal(),acts:['phase'],phase:nx.k,photos:[]});
+ if(nx.k==='flower'){const e=get(p.envId);if(e&&e.schedule!=='12/12'&&!/auto/i.test(p.ptype||'')&&await confirmDlg(`Lichtzyklus von „${esc(e.name)}“ auf 12/12 umstellen?`,'Auf 12/12 stellen')){e.schedule='12/12';put(e)}}
+ render()}
+async function finishPlant(pid){const p=get(pid);if(!await confirmDlg(`„${esc(p.name)}“ abschließen und ins Archiv legen?`,'Abschließen'))return;
+ p.archived=true;p.phases=p.phases||{};p.phases.done=ymd();p.envId=null;put(p);toast('Im Archiv');render()}
+function restorePlant(pid){const p=get(pid);p.archived=false;if(p.phases)delete p.phases.done;put(p);render()}
+async function plantMenu(){const p=get(R.id);const k=await sheetMenu([['edit','Pflanze bearbeiten'],['move','In anderes Zelt'],[p.archived?'restore':'arch',p.archived?'Aus dem Archiv holen':'Archivieren'],['del','Pflanze löschen','danger']]);
  if(k==='edit')editPlant(p);
+ if(k==='move'){const es=envs().filter(e=>e.id!==p.envId);const t=await dialog(`<p>Wohin soll „${esc(p.name)}“?</p>${es.map(e=>`<button class="btn" data-k="${e.id}">${e.kind==='dry'?'🍂':'⛺'} ${esc(e.name)}</button>`).join('')}${p.envId?`<button class="btn" data-k="jar">🫙 Gläser (Curing)</button>`:''}<button class="btn" data-k="">Abbrechen</button>`);
+  if(t){p.envId=t==='jar'?null:t;p.archived=false;put(p);toast('Verschoben');render()}}
+ if(k==='arch'){p.archived=true;p.phases=p.phases||{};p.phases.done=p.phases.done||ymd();put(p);render()}
+ if(k==='restore')restorePlant(p.id);
  if(k==='del'&&await confirmDlg(`„${esc(p.name)}“ löschen? Einträge, die nur diese Pflanze betreffen, werden mitgelöscht.`,'Löschen',true)){
-  entriesOfPlant(p.id).forEach(e=>{e.plantIds=e.plantIds.filter(x=>x!==p.id);if(!e.plantIds.length){(e.photos||[]).forEach(delPhoto);del(e.id)}else put(e)});del(p.id);back()}}
+  logsOfPlant(p.id).forEach(l=>{l.plantIds=l.plantIds.filter(x=>x!==p.id);if(!l.plantIds.length){(l.photos||[]).forEach(delPhoto);del(l.id)}else put(l)});del(p.id);back()}}
 
-/* ============ Formulare (Grow / Pflanze) ============ */
+/* ================= Tagebuch-Ansichten ================= */
+function timeline(ls,cx,p){
+ if(!ls.length)return `<div class="empty"><div class="big">📓</div>Noch keine Einträge. Tippe unten auf ＋.</div>`;
+ let h='',last='';
+ ls.forEach(l=>{const d=l.date.slice(0,10);if(d!==last){last=d;let right='';if(p&&d>=plantStart(p)){const a=ageAt(p,d);right=`Tag ${a.age} · ${a.ph.i} ${a.ph.l} T${a.pday}`}h+=`<div class="dayhead"><b>${fmtDay(d)}</b><span>${right}</span></div>`}h+=logCard(l,cx)});
+ return h}
+function logLines(l){const L=[],k=a=>`<span class="k">${a}</span>`;
+ if(l.water){const w=l.water,p=[];if(w.amount!=null)p.push(fmtN(w.amount,2)+' L'+((l.plantIds||[]).length>1?' je Pflanze':''));if(w.ph!=null)p.push('pH '+fmtN(w.ph,2));if(w.ec!=null)p.push('EC '+fmtN(w.ec,2));
+  if(w.rph!=null||w.rec!=null)p.push(k('Runoff')+' '+[w.rph!=null?'pH '+fmtN(w.rph,2):'',w.rec!=null?'EC '+fmtN(w.rec,2):''].filter(Boolean).join(' '));L.push('💧 '+(p.join(' · ')||'Gegossen'))}
+ if(l.nutrients&&l.nutrients.length)L.push('🧪 '+(l.mixName?`<b>${esc(l.mixName)}</b>: `:'')+l.nutrients.map(n=>esc(n.name)+(n.dose!=null?' '+k(fmtN(n.dose,2)+' '+(n.unit||'ml/L')):'')).join(', '));
+ if(l.env){const v=l.env,p=[];if(v.temp!=null)p.push(fmtN(v.temp)+' °C');if(v.rh!=null)p.push(fmtN(v.rh,0)+' % RLF');const vp=vpd(v.temp,v.rh);if(vp!=null)p.push('VPD '+fmtN(vp,2));if(v.ppfd!=null)p.push(fmtN(v.ppfd,0)+' PPFD');if(v.co2!=null)p.push(fmtN(v.co2,0)+' ppm CO₂');if(p.length)L.push('🌡️ '+p.join(' · '))}
+ if(l.height!=null)L.push('📏 Höhe '+fmtN(l.height)+' cm');
+ if(l.pot)L.push('🪴 Umgetopft in '+esc(l.pot));
+ if(l.training&&l.training.length)L.push('✂️ '+l.training.map(esc).join(', '));
+ if(l.phase)L.push('🔄 Phase → <b>'+(PH[l.phase]?PH[l.phase].i+' '+PH[l.phase].l:esc(l.phase))+'</b>');
+ if(l.problems&&l.problems.length)L.push('🐛 '+l.problems.map(esc).join(', '));
+ if(l.harvest){const p=[];if(l.harvest.wet)p.push('nass '+fmtN(l.harvest.wet,0)+' g');if(l.harvest.dry)p.push('trocken '+fmtN(l.harvest.dry,0)+' g');if(p.length)L.push('⚖️ '+p.join(' · '))}
+ return L}
+function logCard(l,cx){const e=get(l.envId),ps=(l.plantIds||[]).map(get).filter(Boolean);const who=[];
+ if(cx==='all'&&e)who.push(`<span class="pill">${esc(e.name)}</span>`);
+ if(cx!=='plant'){if(ps.length>3)who.push(`<span class="pill">${ps.length} Pflanzen</span>`);else ps.forEach(p=>who.push(`<span class="pill">${esc(p.name)}</span>`))}
+ const icons=(l.acts||[]).map(a=>ACTI[a]?ACTI[a].i:'').join('')+((l.photos||[]).length?'📷':'')+(l.note?'📝':'');
+ return `<button class="entry" onclick="editLog(get('${l.id}'))"><div class="etop"><span class="etime">${l.date.slice(11,16)}</span><span class="eicons">${icons}</span><span class="grow1"></span><span class="plist">${who.join('')}</span></div>
+ ${logLines(l).map(x=>`<div class="eline">${x}</div>`).join('')}${l.note?`<div class="enote">${esc(l.note)}</div>`:''}${(l.photos||[]).length?`<div class="strip">${l.photos.map(id=>img(id)).join('')}</div>`:''}</button>`}
+function gallery(list,p){if(!list.length)return `<div class="empty"><div class="big">📷</div>Noch keine Fotos.</div>`;
+ window._lb=list.map(x=>({id:x.id,cap:fmtDay(x.date)+(p&&x.date.slice(0,10)>=plantStart(p)?' · Tag '+ageAt(p,x.date.slice(0,10)).age:'')}));
+ return `<div class="gallery">${list.map((x,i)=>`<button onclick="lightbox(window._lb,${i})">${img(x.id,'loading="lazy"')}<span>${p&&x.date.slice(0,10)>=plantStart(p)?'T'+ageAt(p,x.date.slice(0,10)).age:fmtShort(x.date)}</span></button>`).join('')}</div>`}
+
+/* ================= Verlauf / Diagramme ================= */
+const X=l=>(utc(l.date)+(Number(l.date.slice(11,13))||0)*36e5+(Number(l.date.slice(14,16))||0)*6e4)/864e5;
+function envChartDefs(e){const ls=logsOfEnv(e.id).slice().reverse().filter(l=>l.env);const s=(f)=>ls.map(l=>({x:X(l),y:f(l)})).filter(p=>p.y!=null);
+ const d=[{title:'Temperatur (°C)',unit:'°C',sets:[{label:'Temperatur',data:s(l=>l.env.temp)}]},{title:'Luftfeuchte (% RLF)',unit:'%',sets:[{label:'RLF',data:s(l=>l.env.rh)}]}];
+ if(e.kind!=='dry')d.push({title:'VPD (kPa)',unit:'kPa',sets:[{label:'VPD',data:s(l=>vpd(l.env.temp,l.env.rh))}]});return d}
+function plantChartDefs(p,ls){const a=ls.slice().reverse(),s=f=>a.map(l=>({x:X(l),y:f(l)})).filter(q=>q.y!=null);
+ return[{title:'pH',unit:'',sets:[{label:'Gießwasser',data:s(l=>l.water&&l.water.ph)},{label:'Runoff',data:s(l=>l.water&&l.water.rph)}]},
+  {title:'EC (mS/cm)',unit:'mS/cm',sets:[{label:'Gießwasser',data:s(l=>l.water&&l.water.ec)},{label:'Runoff',data:s(l=>l.water&&l.water.rec)}]},
+  {title:'Höhe (cm)',unit:'cm',sets:[{label:'Höhe',data:s(l=>l.height)}]},
+  {title:'Wasser pro Gießen (L)',unit:'L',type:'bar',sets:[{label:'Wasser',data:s(l=>l.water&&l.water.amount)}]}]}
+function plantTiles(p,ls){const w=ls.filter(l=>l.water),tot=w.reduce((s,l)=>s+(l.water.amount||0),0),f=ls.filter(l=>l.nutrients&&l.nutrients.length).length;
+ return `<div class="tiles"><div class="tile"><b>${w.length}×</b><span>gegossen · ${fmtN(tot,1)} L gesamt</span></div><div class="tile"><b>${f}×</b><span>gedüngt</span></div><div class="tile"><b>${p.wet?fmtN(p.wet,0)+' g':'–'}</b><span>Nassgewicht</span></div><div class="tile"><b>${p.dry?fmtN(p.dry,0)+' g':'–'}</b><span>Trockengewicht</span></div></div>`}
+function chartSection(defs){defs=defs.map(d=>({...d,sets:d.sets.filter(s=>s.data.length)})).filter(d=>d.sets.length);
+ if(!defs.length)return `<div class="empty">Sobald du Werte einträgst, erscheinen hier die Verläufe.</div>`;
+ if(!window.Chart)return `<div class="card muted small" style="margin-top:14px">Diagramme brauchen beim ersten Start eine Internetverbindung.</div>`;
+ window._cd=defs;return defs.map((d,i)=>`<div class="chartcard"><h3>${d.title}</h3><div class="chartbox"><canvas id="ch${i}" role="img" aria-label="${esc(d.title)}"></canvas></div></div>`).join('')}
+function drawCharts(){if(!window.Chart||!window._cd)return;const muted='#93a59b',text='#eaf1ec',grid='rgba(255,255,255,.06)';
+ const dl=v=>new Date(Math.floor(v)*864e5).toLocaleDateString('de-DE',{day:'numeric',month:'numeric',timeZone:'UTC'});
+ window._cd.forEach((d,i)=>{const cv=document.getElementById('ch'+i);if(!cv)return;const type=d.type||'line';
+  charts.push(new Chart(cv,{type,data:{datasets:d.sets.map((s,j)=>({label:s.label,data:s.data,borderColor:SERIES[j],backgroundColor:SERIES[j],pointBackgroundColor:SERIES[j],pointBorderColor:'#171e1b',pointBorderWidth:2,borderWidth:2,tension:.25,pointRadius:4,pointHoverRadius:7,borderRadius:4,barThickness:8}))},
+  options:{responsive:true,maintainAspectRatio:false,animation:false,interaction:{mode:'nearest',intersect:false},
+   scales:{x:{type:'linear',ticks:{color:muted,maxTicksLimit:6,callback:dl},grid:{color:grid},border:{color:grid}},y:{ticks:{color:muted},grid:{color:grid},border:{display:false},beginAtZero:type==='bar'}},
+   plugins:{legend:{display:d.sets.length>1,labels:{color:text,usePointStyle:true,boxWidth:8,boxHeight:8}},tooltip:{backgroundColor:'#0b0f0d',borderColor:'#2a3530',borderWidth:1,titleColor:text,bodyColor:text,callbacks:{title:it=>dl(it[0].parsed.x),label:it=>`${it.dataset.label}: ${fmtN(it.parsed.y,2)} ${d.unit}`}}}}}))})}
+
+/* ================= Kalender ================= */
+function vCal(){const m=R.month||ymd().slice(0,7),sel=R.sel||ymd();const[y,mo]=m.split('-').map(Number);
+ const startDow=(new Date(y,mo-1,1).getDay()+6)%7,days=new Date(y,mo,0).getDate();
+ const logs={},tasks={};all('log').forEach(l=>{const d=l.date.slice(0,10);logs[d]=(logs[d]||0)+1});all('task').forEach(t=>{if(t.due&&!t.done)tasks[t.due]=(tasks[t.due]||0)+1});
+ let g=['Mo','Di','Mi','Do','Fr','Sa','So'].map(d=>`<div class="dow">${d}</div>`).join('')+'<div></div>'.repeat(startDow);
+ for(let d=1;d<=days;d++){const ds=m+'-'+z2(d);g+=`<button class="${ds===ymd()?'today':''} ${ds===sel?'sel':''}" onclick="R.sel='${ds}';render()">${d}<span class="dots">${logs[ds]?'<i style="background:#7bd389"></i>':''}${tasks[ds]?'<i style="background:#f2c14e"></i>':''}</span></button>`}
+ const tl=all('task').filter(t=>t.due===sel).sort((a,b)=>a.done-b.done),ll=all('log').filter(l=>l.date.slice(0,10)===sel).sort(byDate);
+ const title=new Date(y,mo-1,15).toLocaleDateString('de-DE',{month:'long',year:'numeric'});
+ let h=bighead('Kalender','',`<button class="ib" onclick="editTask(null,null,'${sel}')" aria-label="Erinnerung">＋</button>`)+`<div class="wrap"><div class="calhead"><button class="ib" onclick="calMove(-1)">‹</button><b>${title}</b><button class="ib" onclick="calMove(1)">›</button></div><div class="cal">${g}</div>
+ <div class="muted tiny" style="margin:8px 4px">🟢 Einträge · 🟡 Erinnerungen</div>
+ <div class="h2">${fmtDay(sel)}<button onclick="editTask(null,null,'${sel}')">+ Erinnerung</button></div>`;
+ if(!tl.length&&!ll.length)h+=`<div class="card muted small">Nichts an diesem Tag.</div>`;
+ h+=tl.map(taskRow).join('');if(ll.length)h+=ll.map(l=>logCard(l,'all')).join('');
+ return h+`</div>`}
+function calMove(n){const m=R.month||ymd().slice(0,7);let[y,mo]=m.split('-').map(Number);mo+=n;if(mo<1){mo=12;y--}if(mo>12){mo=1;y++}R.month=y+'-'+z2(mo);R.sel=R.month+'-01';render()}
+
+/* ================= Aufgaben / Erinnerungen ================= */
+function dueLabel(t){if(!t.due)return'Ohne Datum';const d=dayDiff(ymd(),t.due);return d<0&&!t.done?'Überfällig · '+fmtDay(t.due):d===0?'Heute':d===1?'Morgen':fmtDay(t.due)}
+function taskRow(t){const late=t.due&&t.due<ymd()&&!t.done,e=get(t.envId),rep=REPEATS.find(r=>r[0]===t.repeat);
+ return `<div class="task ${t.done?'done':''}"><button class="chk ${t.done?'on':''}" onclick="toggleTask('${t.id}')" aria-label="Erledigt">${t.done?'✓':''}</button><button class="grow1" style="text-align:left" onclick="editTask(get('${t.id}'))"><div class="tt">${esc(t.title)}</div><div class="due ${late?'late':''}">${dueLabel(t)}${e?' · '+esc(e.name):''}${t.repeat?' · 🔁 '+(rep?rep[1]:''):''}</div></button></div>`}
+function toggleTask(id){const t=get(id);t.done=!t.done;
+ if(t.done&&t.repeat&&!t.nextId){const n={...t,id:uid(),done:false,due:addDays(t.due||ymd(),t.repeat)};delete n.nextId;t.nextId=n.id;put(n);toast('Erledigt · nächste am '+fmtShort(n.due))}
+ else if(!t.done&&t.nextId){const n=get(t.nextId);if(n&&!n.done)del(n.id);t.nextId=null}
+ put(t);render()}
+function editTask(t,envId,due){
+ const o=openOverlay(`<div class="shead"><button class="btn" data-x>Abbrechen</button><b>${t?'Erinnerung':'Neue Erinnerung'}</b><button class="btn primary" data-s>Sichern</button></div><div class="sbody"><div class="in">
+ <div class="lbl">Was?</div><input name="title" value="${esc(t?t.title:'')}" placeholder="z. B. Gießen, Wasser ansetzen…">
+ <div class="chips" style="margin-top:8px">${['💧 Gießen','🧪 Düngen','🌡️ Klima prüfen','🪣 Wasser ansetzen','✂️ Entlauben','🔍 Schädlingskontrolle'].map(s=>`<button class="chip" data-sug="${s}">${s}</button>`).join('')}</div>
+ <div class="lbl">Zelt</div><select name="env"><option value="">Kein bestimmtes Zelt</option>${envs().map(e=>`<option value="${e.id}" ${(t?t.envId:envId||ctx().envId)===e.id?'selected':''}>${esc(e.name)}</option>`).join('')}</select>
+ <div class="grid2" style="margin-top:12px"><label class="field"><span>Datum</span><input type="date" name="due" value="${t?t.due||'':due||ymd()}"></label><label class="field"><span>Wiederholen</span><select name="rep">${REPEATS.map(([v,l])=>`<option value="${v}" ${(t?t.repeat||0:0)===v?'selected':''}>${l}</option>`).join('')}</select></label></div>
+ ${t?`<button class="btn danger block" style="margin-top:20px" data-del>Erinnerung löschen</button>`:''}</div></div>`);
+ const ti=$('[name=title]',o);$$('[data-sug]',o).forEach(b=>b.onclick=()=>{ti.value=b.dataset.sug});if(!t)setTimeout(()=>ti.focus(),250);
+ const d=$('[data-del]',o);if(d)d.onclick=()=>{del(t.id);closeOverlay(o);render()};
+ $('[data-s]',o).onclick=()=>{const title=ti.value.trim();if(!title){toast('Bitte einen Titel eingeben');return}
+  const x=t||{id:uid(),type:'task',done:false,created:new Date().toISOString()};Object.assign(x,{title,envId:$('[name=env]',o).value||null,due:$('[name=due]',o).value||null,repeat:Number($('[name=rep]',o).value)});
+  put(x);closeOverlay(o);render();toast('Gespeichert')}}
+
+/* ================= Mehr / Mixe / Archiv ================= */
+function vMore(){R.after=()=>{if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(s=>{const el=$('#stor');if(el&&s.usage!=null)el.textContent=`Belegt: ${fmtN(s.usage/1048576,1)} MB`}).catch(()=>{})};
+ const arch=all('plant').filter(p=>p.archived).length;
+ return bighead('Mehr')+`<div class="wrap">
+ <div class="h2">Grow</div><div><button class="lrow" onclick="go({v:'mixes'})"><span class="ico">🧪</span><span class="grow1">Nährstoff-Mixe</span><span class="muted">${mixes().length} ›</span></button><button class="lrow" onclick="go({v:'archive'})"><span class="ico">📦</span><span class="grow1">Archiv (abgeschlossene Pflanzen)</span><span class="muted">${arch} ›</span></button><button class="lrow" onclick="editEnv()"><span class="ico">⛺</span><span class="grow1">Zelt hinzufügen</span><span class="muted">›</span></button></div>
+ <div class="h2">Daten</div><div><button class="lrow" onclick="exportData()"><span class="ico">💾</span><span class="grow1">Backup exportieren</span><span class="muted">›</span></button><label class="lrow"><span class="ico">📥</span><span class="grow1">Backup importieren</span><span class="muted">›</span><input type="file" accept="application/json,.json" hidden onchange="importData(this.files[0])"></label><button class="lrow" onclick="wipe()"><span class="ico">🗑️</span><span class="grow1" style="color:var(--danger)">Alle Daten löschen</span></button></div>
+ <div class="card small muted" style="margin-top:10px">Alle Daten und Fotos liegen nur auf diesem iPhone. <span id="stor"></span><br>Wenn du die App vom Home-Bildschirm löschst, sind die Daten weg. Mach deshalb regelmäßig ein Backup, z. B. in iCloud Drive.</div>
+ <div class="h2">Installieren</div><div class="card small">In <b>Safari</b> öffnen → <b>Teilen</b> → <b>„Zum Home-Bildschirm“</b>. Danach immer über das Icon starten.</div>
+ <p class="muted tiny" style="text-align:center;margin:24px 0">Grow with Jonny · ${envs().length} Zelte · ${activePlants().length} Pflanzen · ${all('log').length} Einträge</p></div>`}
+function vMixes(){const ms=mixes();
+ return head('Nährstoff-Mixe')+`<div class="wrap"><p class="muted small" style="margin:4px 4px 12px">Lege deine Düngerschemata einmal an, zum Beispiel „Blüte W3“. Beim Düngen wählst du den Mix dann mit einem Tipp.</p>`+
+ (ms.length?ms.map(m=>`<button class="entry" onclick="editMix(get('${m.id}'))"><div class="pname">🧪 ${esc(m.name)}</div><div class="eline muted">${(m.items||[]).map(n=>esc(n.name)+(n.dose!=null?' '+fmtN(n.dose,2)+' '+(n.unit||'ml/L'):'')).join(' · ')||'Leer'}</div></button>`).join(''):`<div class="empty"><div class="big">🧪</div>Noch keine Mixe.</div>`)+
+ `<button class="btn primary block" onclick="editMix()">+ Neuer Mix</button></div>`}
+function nrow(n={}){return `<div class="nrow"><input name="nname" list="nutlist" placeholder="Produkt" value="${esc(n.name||'')}"><input name="ndose" type="number" inputmode="decimal" step="any" placeholder="Menge" value="${n.dose??''}"><select name="nunit"><option>ml/L</option><option ${n.unit==='g/L'?'selected':''}>g/L</option></select><button type="button" class="ib" style="color:var(--faint);font-size:15px;width:30px" data-rm>✕</button></div>`}
+const readRows=root=>$$('.nrow',root).map(r=>({name:$('[name=nname]',r).value.trim(),dose:num($('[name=ndose]',r).value),unit:$('[name=nunit]',r).value})).filter(n=>n.name);
+function bindRows(box){$$('[data-rm]',box).forEach(b=>b.onclick=()=>b.parentElement.remove())}
+function editMix(m){
+ const o=openOverlay(`<div class="shead"><button class="btn" data-x>Abbrechen</button><b>${m?'Mix bearbeiten':'Neuer Mix'}</b><button class="btn primary" data-s>Sichern</button></div><div class="sbody"><div class="in">
+ <div class="lbl">Name</div><input name="name" value="${esc(m?m.name:'')}" placeholder="z. B. Blüte Woche 3">
+ <div class="lbl">Produkte (pro Liter)</div><div id="mrows">${(m&&m.items&&m.items.length?m.items:[{},{}]).map(nrow).join('')}</div><button class="btn" data-addn>+ Produkt</button>
+ <datalist id="nutlist">${nutrientNames().map(n=>`<option value="${esc(n)}">`).join('')}</datalist>
+ ${m?`<button class="btn danger block" style="margin-top:20px" data-del>Mix löschen</button>`:''}</div></div>`);
+ const box=$('#mrows',o);bindRows(box);$('[data-addn]',o).onclick=()=>{box.insertAdjacentHTML('beforeend',nrow());bindRows(box)};
+ const d=$('[data-del]',o);if(d)d.onclick=()=>{del(m.id);closeOverlay(o);render()};
+ $('[data-s]',o).onclick=()=>{const name=$('[name=name]',o).value.trim();if(!name){toast('Bitte einen Namen eingeben');return}
+  const x=m||{id:uid(),type:'mix'};x.name=name;x.items=readRows(box);put(x);closeOverlay(o);render()}}
+function vArchive(){const ps=all('plant').filter(p=>p.archived).sort((a,b)=>((b.phases&&b.phases.done)||'').localeCompare((a.phases&&a.phases.done)||''));
+ const dry=ps.reduce((s,p)=>s+(p.dry||0),0);
+ return head('Archiv')+`<div class="wrap">${ps.length?`<div class="tiles" style="margin-top:0"><div class="tile"><b>${ps.length}</b><span>abgeschlossene Pflanzen</span></div><div class="tile"><b>${fmtN(dry,0)} g</b><span>Ertrag trocken gesamt</span></div></div><div style="height:12px"></div>`+ps.map(plantCard).join(''):`<div class="empty"><div class="big">📦</div>Abgeschlossene Pflanzen landen hier – mit Ertrag und komplettem Tagebuch.</div>`}</div>`}
+
+/* ================= Formulare: Zelt & Pflanze ================= */
 function field(f,v){const val=v??f.d??'';
- if(f.t==='select')return `<label class="field"><span>${f.l}</span><select name="${f.n}"><option value="">–</option>${f.o.map(o=>`<option ${o==val?'selected':''}>${esc(o)}</option>`).join('')}</select></label>`;
+ if(f.t==='select')return `<label class="field"><span>${f.l}</span><select name="${f.n}">${f.noEmpty?'':'<option value="">–</option>'}${f.o.map(o=>{const[k,l]=Array.isArray(o)?o:[o,o];return `<option value="${esc(k)}" ${k==val?'selected':''}>${esc(l)}</option>`}).join('')}</select></label>`;
  if(f.t==='textarea')return `<label class="field"><span>${f.l}</span><textarea name="${f.n}">${esc(val)}</textarea></label>`;
- return `<label class="field"><span>${f.l}</span><input name="${f.n}" type="${f.t||'text'}" ${f.t==='number'?'inputmode="decimal" step="any"':''} value="${esc(val)}" ${f.req?'required':''} placeholder="${esc(f.ph||'')}"></label>`}
+ return `<label class="field"><span>${f.l}</span><input name="${f.n}" type="${f.t||'text'}" ${f.t==='number'?'inputmode="decimal" step="any"':''} value="${esc(val)}" placeholder="${esc(f.ph||'')}"></label>`}
 function formSheet(title,fields,obj,onSave){
  const o=openOverlay(`<div class="shead"><button class="btn" data-x>Abbrechen</button><b>${title}</b><button class="btn primary" data-s>Sichern</button></div><div class="sbody"><form class="in">${fields.map(r=>Array.isArray(r)?`<div class="grid2" style="margin-bottom:10px">${r.map(f=>field(f,obj&&obj[f.n])).join('')}</div>`:`<div style="margin-bottom:10px">${field(r,obj&&obj[r.n])}</div>`).join('')}</form></div>`);
  const form=$('form',o);
- $('[data-s]',o).onclick=()=>{if(!form.reportValidity())return;const v=Object.fromEntries(new FormData(form));Object.keys(v).forEach(k=>v[k]=typeof v[k]==='string'?v[k].trim():v[k]);onSave(v);closeOverlay(o)};
- form.onsubmit=e=>{e.preventDefault();$('[data-s]',o).click()};
-}
-function editGrow(g){
- formSheet(g?'Grow bearbeiten':'Neuer Grow',[
-  {n:'name',l:'Name',req:true,ph:'z. B. Zelt 1 · Winter 2026'},
-  {n:'start',l:'Startdatum',t:'date',d:ymd(),req:true},
-  [{n:'env',l:'Umgebung',t:'select',o:ENVS,d:'Indoor'},{n:'medium',l:'Medium',t:'select',o:MEDIA}],
-  [{n:'light',l:'Licht',t:'select',o:LIGHTS},{n:'watt',l:'Leistung (Watt)',t:'number'}],
-  {n:'space',l:'Fläche / Zelt',ph:'z. B. 80×80×180 cm'},
-  {n:'notes',l:'Notizen',t:'textarea'}],g,v=>{
-   const o=g||{id:uid(),type:'grow',created:new Date().toISOString(),archived:false};Object.assign(o,v,{watt:num(v.watt)});put(o);
-   if(!g){go({v:'grow',id:o.id,tab:'plants'});setTimeout(()=>editPlant(null,o.id),250)}else render()})}
-function editPlant(p,gid){
- const isNew=!p;
+ $('[data-s]',o).onclick=()=>{const v=Object.fromEntries(new FormData(form));Object.keys(v).forEach(k=>v[k]=typeof v[k]==='string'?v[k].trim():v[k]);if(onSave(v)!==false)closeOverlay(o)};
+ form.onsubmit=e=>{e.preventDefault();$('[data-s]',o).click()}}
+function editEnv(e){
+ formSheet(e?'Zelt bearbeiten':'Neues Zelt',[
+  {n:'name',l:'Name',ph:'z. B. Zelt 1',d:e?'':'Zelt '+(envs().filter(x=>x.kind!=='dry').length+1)},
+  [{n:'kind',l:'Art',t:'select',noEmpty:true,o:[['grow','Growzelt'],['dry','Trockenzelt']],d:'grow'},{n:'size',l:'Größe',ph:'z. B. 100×100×200'}],
+  [{n:'light',l:'Licht',t:'select',o:LIGHTS},{n:'watt',l:'Watt',t:'number'}],
+  [{n:'schedule',l:'Lichtzyklus',t:'select',o:SCHEDULES},{n:'medium',l:'Medium',t:'select',o:MEDIA}],
+  {n:'notes',l:'Notizen (Lüfter, Filter, Befeuchter …)',t:'textarea'}],e,v=>{
+   if(!v.name){toast('Bitte einen Namen eingeben');return false}
+   const o=e||{id:uid(),type:'env',created:new Date().toISOString(),order:envs().length};Object.assign(o,v,{watt:num(v.watt)});put(o);render()})}
+function editPlant(p,envId){const isNew=!p;const eid=p?p.envId:envId||(envs().find(e=>e.kind!=='dry')||{}).id;
+ const n0=plantsIn(eid).length+1,en=(get(eid)||{}).name||'';const short=en.replace(/^Zelt\s*/i,'Z').replace(/\s+/g,'');
  formSheet(p?'Pflanze bearbeiten':'Neue Pflanze',[
-  {n:'name',l:'Name',req:true,ph:'z. B. Pflanze 1',d:isNew?'Pflanze '+(plantsOf(gid).length+1):''},
+  [{n:'name',l:'Name',d:isNew?(short?short+'-':'P')+n0:''},...(isNew?[{n:'count',l:'Anzahl',t:'select',noEmpty:true,o:[1,2,3,4,5,6,8,9,10,12,16],d:1}]:[])],
   [{n:'strain',l:'Sorte',ph:'z. B. Northern Lights'},{n:'breeder',l:'Breeder / Samenbank'}],
   [{n:'ptype',l:'Typ',t:'select',o:PTYPES},{n:'pot',l:'Topf',ph:'z. B. 11 L Stofftopf'}],
-  ...(isNew?[[{n:'startPhase',l:'Startet in Phase',t:'select',o:PHASES.slice(0,4).map(x=>x.l),d:'Keimung'},{n:'startDate',l:'seit',t:'date',d:ymd()}]]:[]),
+  {n:'envId',l:'Zelt',t:'select',noEmpty:true,o:envs().map(e=>[e.id,e.name]),d:eid},
+  ...(isNew?[[{n:'startPhase',l:'Startet in Phase',t:'select',noEmpty:true,o:PHASES.slice(0,4).map(x=>[x.k,x.l]),d:'germination'},{n:'startDate',l:'seit',t:'date',d:ymd()}]]:[]),
   {n:'notes',l:'Notizen',t:'textarea'}],p,v=>{
-   const o=p||{id:uid(),type:'plant',growId:gid,created:new Date().toISOString(),phases:{}};
-   const{startPhase,startDate,...rest}=v;Object.assign(o,rest);
-   if(isNew){const ph=PHASES.find(x=>x.l===startPhase)||PHASES[0];o.phases[ph.k]=startDate||ymd()}
-   put(o);render()})}
+   const{startPhase,startDate,count,...rest}=v;if(!rest.name){toast('Bitte einen Namen eingeben');return false}
+   if(!isNew){Object.assign(p,rest);put(p);render();return}
+   const c=Number(count)||1,m=rest.name.match(/^(.*?)(\d+)$/);const base=m?m[1]:rest.name+' ',start=m?Number(m[2]):1;
+   for(let i=0;i<c;i++){const o={id:uid(),type:'plant',created:new Date().toISOString(),archived:false,phases:{[startPhase||'germination']:startDate||ymd()},...rest};if(c>1||m)o.name=base+(start+i);put(o)}
+   toast(c>1?c+' Pflanzen angelegt':'Pflanze angelegt');render()})}
 
-/* ============ Eintrag-Editor ============ */
-function editEntry(seed){
- const ex=seed&&seed.id?seed:null;const growId=seed.growId,g=get(growId),ps=plantsOf(growId);
- const e=ex?JSON.parse(JSON.stringify(ex)):{growId,date:nowLocal(),plantIds:seed.plantIds||ps.filter(p=>!['drying','curing','done'].includes(curPhase(p).k)).map(p=>p.id),acts:(seed.acts||[]).filter(a=>a!=='photo'),photos:[],nutrients:[]};
- if(!ex&&!e.plantIds.length)e.plantIds=ps.map(p=>p.id);
- const W=e.water||{},V=e.env||{},H=e.harvest||{};const sel=new Set(e.plantIds),acts=new Set(e.acts),photos=[...(e.photos||[])],removed=[],added=[];
- const nf=(n,l,v,ph='')=>`<label class="field"><span>${l}</span><input name="${n}" type="number" inputmode="decimal" step="any" value="${v??''}" placeholder="${ph}"></label>`;
- const nrow=(n={})=>`<div class="nrow"><input name="nname" list="nutlist" placeholder="Dünger / Zusatz" value="${esc(n.name||'')}"><input name="ndose" type="number" inputmode="decimal" step="any" placeholder="ml/L" value="${n.dose??''}"><button type="button" class="ib" style="color:var(--faint);font-size:16px" data-rm>✕</button></div>`;
- const lastFeed=entriesOf(growId).find(x=>x.nutrients&&x.nutrients.length&&(!ex||x.id!==ex.id));
- const o=openOverlay(`<div class="shead"><button class="btn" data-x>Abbrechen</button><b>${ex?'Eintrag bearbeiten':'Neuer Eintrag'}</b><button class="btn primary" data-s>Sichern</button></div>
+/* ================= Ernte / Trocknung / Curing ================= */
+function stageFlow(phase,c={}){
+ const from=phase==='drying'?'flower':'drying';let cands=activePlants().filter(p=>curPhase(p).k===from);
+ (c.plantIds||[]).forEach(id=>{const p=get(id);if(p&&!cands.includes(p))cands.push(p)});
+ if(!cands.length){toast(phase==='drying'?'Keine Pflanze in der Blüte':'Keine Pflanze in der Trocknung');return}
+ cands.sort((a,b)=>((get(a.envId)||{}).name||'').localeCompare((get(b.envId)||{}).name||'')||byName(a,b));
+ const pre=new Set(c.plantIds&&c.plantIds.length?c.plantIds:cands.filter(p=>!c.envId||p.envId===c.envId).map(p=>p.id));
+ const D=dryEnvs(),harvest=phase==='drying';
+ const o=openOverlay(`<div class="shead"><button class="btn" data-x>Abbrechen</button><b>${harvest?'🌾 Ernten':'🫙 Ins Glas'}</b><button class="btn primary" data-s>Sichern</button></div><div class="sbody"><div class="in">
+ <div class="grid2"><label class="field"><span>Datum</span><input type="date" name="date" value="${ymd()}"></label>${harvest?`<label class="field"><span>Trocknen in</span><select name="to">${D.map(e=>`<option value="${e.id}">${esc(e.name)}</option>`).join('')}<option value="">Im Zelt lassen</option></select></label>`:''}</div>
+ <div class="muted small" style="margin:10px 2px">${harvest?'Wähle die Pflanzen und trag das Nassgewicht ein (optional). Sie wandern ins Trockenzelt.':'Trockengewicht eintragen (optional). Die Pflanzen wandern vom Trockenzelt in die Gläser.'}</div>
+ ${cands.map(p=>{const e=get(p.envId),a=ageAt(p);return `<div class="hrow" data-pid="${p.id}"><button class="chk ${pre.has(p.id)?'on':''}">${pre.has(p.id)?'✓':''}</button><div class="grow1"><b>${esc(p.name)}</b><div class="muted tiny">${e?esc(e.name)+' · ':''}${a.ph.l} Tag ${a.pday}${p.strain?' · '+esc(p.strain):''}</div></div><input type="number" inputmode="decimal" step="any" placeholder="${harvest?'nass g':'trocken g'}" value="${harvest?(p.wet??''):(p.dry??'')}"></div>`}).join('')}
+ </div></div>`);
+ $$('.hrow .chk',o).forEach(b=>b.onclick=()=>{b.classList.toggle('on');b.textContent=b.classList.contains('on')?'✓':''});
+ $('[data-s]',o).onclick=()=>{const date=$('[name=date]',o).value||ymd(),to=harvest?$('[name=to]',o).value:null;let n=0;
+  $$('.hrow',o).forEach(r=>{if(!$('.chk',r).classList.contains('on'))return;const p=get(r.dataset.pid),w=num($('input',r).value),old=p.envId;
+   p.phases=p.phases||{};p.phases[phase]=date;if(harvest){if(w!=null)p.wet=w;if(to)p.envId=to}else{if(w!=null)p.dry=w;p.envId=null}put(p);n++;
+   put({id:uid(),type:'log',envId:old,plantIds:[p.id],date:date+'T'+nowTime(),acts:['harvest','phase'],phase,harvest:harvest?(w!=null?{wet:w}:null):(w!=null?{dry:w}:null),photos:[]})});
+  if(!n){toast('Keine Pflanze ausgewählt');return}closeOverlay(o);render();toast(harvest?`${n} geerntet 🌾`:`${n} im Glas 🫙`)}}
+
+/* ================= Plus-Menü & Klima ================= */
+async function plusMenu(){const c=ctx();
+ const items=[['water','💧','Gießen'],['feed','🧪','Düngen'],['env','🌡️','Klima'],['photo','📷','Foto'],['train','✂️','Training'],['transplant','🪴','Umtopfen'],['measure','📏','Messen'],['problem','🐛','Problem'],['note','📝','Notiz'],['harvest','🌾','Ernten'],['task','🔔','Erinnerung'],['plant','🌱','Pflanze']];
+ const k=await dialog(`<div class="pgrid">${items.map(([k,i,l])=>`<button data-k="${k}"><span>${i}</span>${l}</button>`).join('')}</div><button class="btn" data-k="">Abbrechen</button>`);
+ if(!k)return;if(!envs().length&&k!=='task'){toast('Lege zuerst deine Zelte an');tab('garden');return}
+ if(k==='env')return quickClimate(c.envId);
+ if(k==='harvest')return stageFlow('drying',c);
+ if(k==='task')return editTask(null,c.envId);
+ if(k==='plant')return editPlant(null,c.envId&&get(c.envId).kind!=='dry'?c.envId:null);
+ editLog({...c,acts:k==='note'?[]:[k]})}
+function quickClimate(envId){const es=envs();if(!es.length)return;let eid=envId||es[0].id;
+ const o=openOverlay(`<div class="shead"><button class="btn" data-x>Abbrechen</button><b>🌡️ Klima</b><button class="btn primary" data-s>Sichern</button></div><div class="sbody"><div class="in">
+ <div class="lbl">Zelt</div><div class="chips" id="qenv">${es.map(e=>`<button class="chip ${e.id===eid?'on':''}" data-env="${e.id}">${e.kind==='dry'?'🍂':'⛺'} ${esc(e.name)}</button>`).join('')}</div>
+ <div class="grid2" style="margin-top:14px">${nf('t','Temperatur °C')}${nf('h','Luftfeuchte %')}</div>
+ <div class="vpd" id="qv"></div>
+ <div class="grid2" style="margin-top:12px">${nf('ppfd','PPFD (optional)')}${nf('co2','CO₂ ppm (optional)')}</div>
+ <div class="lbl">Notiz</div><input name="note" placeholder="optional">
+ <button class="btn block" style="margin-top:16px" data-next></button></div></div>`);
+ const T=$('[name=t]',o),H=$('[name=h]',o),qv=$('#qv',o),nx=$('[data-next]',o);
+ const upd=()=>{const e=get(eid),ph=envPhase(e),t=num(T.value),h=num(H.value),v=vpd(t,h);
+  qv.innerHTML=(v!=null&&e.kind!=='dry'?`VPD ≈ <b>${fmtN(v,2)} kPa</b> `:'')+(t!=null||h!=null?statusHTML(t,h,ph):'')+`<div class="muted tiny" style="margin-top:4px">${ph?targetText(ph):'Keine Pflanzen im Zelt – kein Zielbereich.'}</div>`;
+  const i=es.findIndex(x=>x.id===eid);nx.style.display=i<es.length-1?'':'none';if(i<es.length-1)nx.textContent=`Sichern & weiter zu „${es[i+1].name}“`};
+ const pick=id=>{eid=id;$$('[data-env]',o).forEach(b=>b.classList.toggle('on',b.dataset.env===id));upd()};
+ $$('[data-env]',o).forEach(b=>b.onclick=()=>pick(b.dataset.env));T.oninput=upd;H.oninput=upd;upd();setTimeout(()=>T.focus(),250);
+ const save=()=>{const v={temp:num(T.value),rh:num(H.value),ppfd:num($('[name=ppfd]',o).value),co2:num($('[name=co2]',o).value)};Object.keys(v).forEach(k=>v[k]==null&&delete v[k]);
+  if(!Object.keys(v).length){toast('Bitte Temperatur oder Luftfeuchte eintragen');return false}
+  put({id:uid(),type:'log',envId:eid,plantIds:[],date:nowLocal(),acts:['env'],env:v,note:$('[name=note]',o).value.trim(),photos:[]});return true};
+ $('[data-s]',o).onclick=()=>{if(save()){closeOverlay(o);render();toast('Gespeichert')}};
+ nx.onclick=()=>{if(!save())return;const i=es.findIndex(x=>x.id===eid);toast(`${get(eid).name} gespeichert`);['t','h','ppfd','co2','note'].forEach(n=>$(`[name=${n}]`,o).value='');pick(es[i+1].id);T.focus()}}
+
+/* ================= Eintrag-Editor ================= */
+function editLog(seed={}){
+ const ex=seed.id?seed:null;
+ let eid=ex?ex.envId:(seed.envId||(envs().find(e=>e.kind!=='dry')||envs()[0]||{}).id);
+ const e0=ex?JSON.parse(JSON.stringify(ex)):{date:nowLocal(),acts:(seed.acts||[]).filter(a=>a!=='photo'),photos:[],nutrients:[]};
+ const acts=new Set(e0.acts);const defSel=id=>plantsIn(id).filter(p=>!['drying','curing'].includes(curPhase(p).k)).map(p=>p.id);
+ let sel=new Set(ex?ex.plantIds||[]:seed.plantIds||defSel(eid));
+ const photos=[...(e0.photos||[])],removed=[],added=[];const W=e0.water||{},V=e0.env||{};
+ const o=openOverlay(`<div class="shead"><button class="btn" data-x>Abbrechen</button><b>${ex?'Eintrag':'Neuer Eintrag'}</b><button class="btn primary" data-s>Sichern</button></div>
  <div class="sbody"><div class="in">
-  <div class="lbl">Datum & Uhrzeit</div><input type="datetime-local" name="date" value="${esc(e.date)}">
-  ${ps.length?`<div class="lbl">Pflanzen</div><div class="chips" id="pchips"><button class="chip" data-all>Alle</button>${ps.map(p=>`<button class="chip ${sel.has(p.id)?'on':''}" data-pid="${p.id}">${esc(p.name)}</button>`).join('')}</div>`:`<div class="banner" style="margin-top:12px">Dieser Grow hat noch keine Pflanzen. Der Eintrag gilt für den ganzen Grow.</div>`}
+  <div class="lbl">Datum & Uhrzeit</div><input type="datetime-local" name="date" value="${esc(e0.date)}">
+  <div class="lbl">Zelt</div><div class="chips">${envs().map(e=>`<button class="chip ${e.id===eid?'on':''}" data-env="${e.id}">${e.kind==='dry'?'🍂':'⛺'} ${esc(e.name)}</button>`).join('')}</div>
+  <div id="pwrap"></div>
   <div class="lbl">Was hast du gemacht?</div><div class="acts">${ACTS.map(a=>`<button class="act ${acts.has(a.k)?'on':''}" data-act="${a.k}"><span>${a.i}</span>${a.l}</button>`).join('')}</div>
-  <div class="sec" data-sec="water"><h4>💧 Gießen</h4><div class="grid3">${nf('w_amount','Menge (L)',W.amount)}${nf('w_ph','pH',W.ph)}${nf('w_ec','EC (mS/cm)',W.ec)}</div><div class="grid3" style="margin-top:8px">${nf('w_temp','Wasser °C',W.temp)}${nf('w_rph','Runoff pH',W.rph)}${nf('w_rec','Runoff EC',W.rec)}</div></div>
-  <div class="sec" data-sec="feed"><h4>🧪 Dünger & Zusätze</h4><div id="nrows">${(e.nutrients&&e.nutrients.length?e.nutrients:[{}]).map(nrow).join('')}</div><div class="row"><button type="button" class="btn" data-addn>+ Zeile</button>${lastFeed?`<button type="button" class="btn" data-lastn>Wie zuletzt</button>`:''}</div><datalist id="nutlist">${nutrientNames().map(n=>`<option value="${esc(n)}">`).join('')}</datalist></div>
-  <div class="sec" data-sec="env"><h4>🌡️ Klima & Licht</h4><div class="grid3">${nf('v_temp','Temp. °C',V.temp)}${nf('v_rh','RLF %',V.rh)}${nf('v_light','Licht h/Tag',V.light,'18')}</div><div class="grid3" style="margin-top:8px">${nf('v_ppfd','PPFD',V.ppfd)}${nf('v_co2','CO₂ ppm',V.co2)}${nf('v_dist','Abstand cm',V.dist)}</div><div class="vpd muted" id="vpdout"></div></div>
-  <div class="sec" data-sec="measure"><h4>📏 Messen</h4><div class="grid2">${nf('height','Höhe (cm)',e.height)}</div></div>
-  <div class="sec" data-sec="training"><h4>✂️ Training</h4><div class="chips" data-multi="training">${TRAININGS.map(t=>`<button class="chip ${(e.training||[]).includes(t)?'on':''}" data-v="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>
-  <div class="sec" data-sec="phase"><h4>🔄 Phasenwechsel</h4><select name="phase">${PHASES.map(x=>`<option value="${x.k}" ${(e.phase||(ps[0]?PHASES[Math.min(PHASES.length-1,PHASES.indexOf(curPhase(ps.find(p=>sel.has(p.id))||ps[0]))+1)].k:''))===x.k?'selected':''}>${x.i} ${x.l}</option>`).join('')}</select><div class="muted small" style="margin-top:6px">Setzt bei den gewählten Pflanzen das Startdatum dieser Phase auf das Eintragsdatum.</div></div>
-  <div class="sec" data-sec="problem"><h4>🐛 Probleme</h4><div class="chips" data-multi="problems">${PROBLEMS.map(t=>`<button class="chip ${(e.problems||[]).includes(t)?'on':''}" data-v="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>
-  <div class="sec" data-sec="harvest"><h4>⚖️ Ernte</h4><div class="grid2">${nf('h_wet','Nassgewicht (g)',H.wet)}${nf('h_dry','Trockengewicht (g)',H.dry)}</div><div class="muted small" style="margin-top:6px">Trockengewicht kannst du später nachtragen, indem du diesen Eintrag bearbeitest.</div></div>
+  <div class="sec" data-sec="water"><h4>💧 Gießen</h4><div class="grid3">${nf('w_amount','L je Pflanze',W.amount)}${nf('w_ph','pH',W.ph)}${nf('w_ec','EC mS/cm',W.ec)}</div><div class="grid2" style="margin-top:8px">${nf('w_rph','Runoff pH',W.rph)}${nf('w_rec','Runoff EC',W.rec)}</div></div>
+  <div class="sec" data-sec="feed"><h4>🧪 Düngen</h4><select data-mix style="margin-bottom:8px"><option value="">Mix laden …</option>${mixes().map(m=>`<option value="${m.id}">${esc(m.name)}</option>`).join('')}<option value="last">Wie zuletzt in diesem Zelt</option></select><div id="nrows">${(e0.nutrients&&e0.nutrients.length?e0.nutrients:[{}]).map(nrow).join('')}</div><button type="button" class="btn" data-addn>+ Produkt</button><datalist id="nutlist">${nutrientNames().map(n=>`<option value="${esc(n)}">`).join('')}</datalist></div>
+  <div class="sec" data-sec="env"><h4>🌡️ Klima</h4><div class="grid2">${nf('v_temp','Temperatur °C',V.temp)}${nf('v_rh','Luftfeuchte %',V.rh)}</div><div class="grid2" style="margin-top:8px">${nf('v_ppfd','PPFD',V.ppfd)}${nf('v_co2','CO₂ ppm',V.co2)}</div><div class="vpd" id="vpdout"></div></div>
+  <div class="sec" data-sec="train"><h4>✂️ Training</h4><div class="chips" data-multi="training">${TRAININGS.map(t=>`<button class="chip ${(e0.training||[]).includes(t)?'on':''}" data-v="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>
+  <div class="sec" data-sec="transplant"><h4>🪴 Umtopfen</h4><input name="pot" placeholder="Neuer Topf, z. B. 18 L Stofftopf" value="${esc(e0.pot||'')}"></div>
+  <div class="sec" data-sec="measure"><h4>📏 Messen</h4><div class="grid2">${nf('height','Höhe (cm)',e0.height)}</div></div>
+  <div class="sec" data-sec="problem"><h4>🐛 Problem</h4><div class="chips" data-multi="problems">${PROBLEMS.map(t=>`<button class="chip ${(e0.problems||[]).includes(t)?'on':''}" data-v="${esc(t)}">${esc(t)}</button>`).join('')}</div></div>
+  <div class="sec" data-sec="phase"><h4>🔄 Phase</h4><select name="phase"></select><div class="muted small" style="margin-top:6px">Setzt bei den gewählten Pflanzen das Startdatum dieser Phase.</div></div>
   <div class="lbl">Fotos</div><div class="photos" id="phs"></div>
-  <div class="lbl">Notiz</div><textarea name="note" placeholder="Beobachtungen, Geruch, Blattfarbe…">${esc(e.note||'')}</textarea>
+  <div class="lbl">Notiz</div><textarea name="note" placeholder="Beobachtungen, Geruch, Blattfarbe …">${esc(e0.note||'')}</textarea>
   ${ex?`<button class="btn danger block" style="margin-top:20px" data-del>Eintrag löschen</button>`:''}
  </div></div>`);
+ const pwrap=$('#pwrap',o);
+ const drawPlants=()=>{const ps=plantsIn(eid);(ex?ex.plantIds||[]:[]).forEach(id=>{const p=get(id);if(p&&!ps.includes(p))ps.push(p)});
+  pwrap.innerHTML=ps.length?`<div class="lbl">Pflanzen</div><div class="chips"><button class="chip" data-all>Alle</button>${ps.map(p=>`<button class="chip ${sel.has(p.id)?'on':''}" data-pid="${p.id}">${esc(p.name)}</button>`).join('')}</div>`:'';
+  $$('[data-pid]',pwrap).forEach(b=>b.onclick=()=>{const id=b.dataset.pid;sel.has(id)?sel.delete(id):sel.add(id);b.classList.toggle('on');drawPhaseSel()});
+  const a=$('[data-all]',pwrap);if(a)a.onclick=()=>{const on=sel.size!==ps.length;sel=new Set(on?ps.map(p=>p.id):[]);$$('[data-pid]',pwrap).forEach(b=>b.classList.toggle('on',on));drawPhaseSel()}};
+ const drawPhaseSel=()=>{const p=[...sel].map(get).find(Boolean);const def=e0.phase||(p?PHASES[Math.min(PHASES.length-1,PHASES.indexOf(curPhase(p))+1)].k:'veg');$('[name=phase]',o).innerHTML=PHASES.map(x=>`<option value="${x.k}" ${x.k===def?'selected':''}>${x.i} ${x.l}</option>`).join('')};
+ drawPlants();drawPhaseSel();
+ $$('[data-env]',o).forEach(b=>b.onclick=()=>{eid=b.dataset.env;$$('[data-env]',o).forEach(x=>x.classList.toggle('on',x===b));sel=new Set(defSel(eid));drawPlants();drawPhaseSel();upV()});
  const secs=()=>$$('.sec',o).forEach(s=>s.classList.toggle('on',acts.has(s.dataset.sec)));secs();
  $$('[data-act]',o).forEach(b=>b.onclick=()=>{const k=b.dataset.act;acts.has(k)?acts.delete(k):acts.add(k);b.classList.toggle('on');secs()});
- $$('[data-pid]',o).forEach(b=>b.onclick=()=>{const id=b.dataset.pid;sel.has(id)?sel.delete(id):sel.add(id);b.classList.toggle('on')});
- const allB=$('[data-all]',o);if(allB)allB.onclick=()=>{const on=sel.size!==ps.length;sel.clear();if(on)ps.forEach(p=>sel.add(p.id));$$('[data-pid]',o).forEach(b=>b.classList.toggle('on',on))};
  $$('[data-multi] .chip',o).forEach(b=>b.onclick=()=>b.classList.toggle('on'));
- const nrows=$('#nrows',o);const bindRm=()=>$$('[data-rm]',nrows).forEach(b=>b.onclick=()=>b.parentElement.remove());bindRm();
- $('[data-addn]',o).onclick=()=>{nrows.insertAdjacentHTML('beforeend',nrow());bindRm()};
- const ln=$('[data-lastn]',o);if(ln)ln.onclick=()=>{nrows.innerHTML=lastFeed.nutrients.map(nrow).join('');bindRm()};
- const vo=$('#vpdout',o),upV=()=>{const v=vpd(num($('[name=v_temp]',o).value),num($('[name=v_rh]',o).value));vo.innerHTML=v==null?'VPD wird aus Temperatur und RLF berechnet (Blatt 2 °C kühler).':`VPD ≈ <b style="color:var(--text)">${fmtN(v,2)} kPa</b> ${v<.4?'· sehr niedrig':v<.8?'· gut für Sämlinge/Stecklinge':v<1.2?'· gut für Wachstum':v<1.6?'· gut für Blüte':'· zu hoch'}`};
+ const box=$('#nrows',o);bindRows(box);$('[data-addn]',o).onclick=()=>{box.insertAdjacentHTML('beforeend',nrow());bindRows(box)};
+ let mixName=e0.mixName||'';
+ $('[data-mix]',o).onchange=ev=>{const v=ev.target.value;let items=null;
+  if(v==='last'){const l=logsOfEnv(eid).find(l=>l.nutrients&&l.nutrients.length&&(!ex||l.id!==ex.id));if(!l){toast('In diesem Zelt wurde noch nicht gedüngt');ev.target.value='';return}items=l.nutrients;mixName=l.mixName||''}
+  else if(v){const m=get(v);items=m.items||[];mixName=m.name}
+  if(items){box.innerHTML=(items.length?items:[{}]).map(nrow).join('');bindRows(box)}ev.target.value=''};
+ const vo=$('#vpdout',o),upV=()=>{const t=num($('[name=v_temp]',o).value),h=num($('[name=v_rh]',o).value),v=vpd(t,h),e=get(eid);vo.innerHTML=(v!=null?`VPD ≈ <b>${fmtN(v,2)} kPa</b> `:'')+(e&&(t!=null||h!=null)?statusHTML(t,h,envPhase(e)):'')};
  $('[name=v_temp]',o).oninput=upV;$('[name=v_rh]',o).oninput=upV;upV();
  const phs=$('#phs',o);
  const drawPh=()=>{phs.innerHTML=photos.map((id,i)=>`<div class="ph">${img(id)}<button class="x" data-i="${i}">✕</button></div>`).join('')+`<label class="addph">＋<input type="file" accept="image/*" multiple hidden></label>`;hydrate(phs);
   $$('.x',phs).forEach(b=>b.onclick=()=>{const[id]=photos.splice(+b.dataset.i,1);removed.push(id);drawPh()});
-  $('input',phs).onchange=async ev=>{const fs=[...ev.target.files];if(!fs.length)return;toast(fs.length>1?fs.length+' Fotos werden verarbeitet…':'Foto wird verarbeitet…');
+  $('input',phs).onchange=async ev=>{const fs=[...ev.target.files];if(!fs.length)return;toast(fs.length>1?fs.length+' Fotos werden verarbeitet …':'Foto wird verarbeitet …');
    for(const f of fs){try{const b=await shrink(f);const id=await putPhoto(b);photos.push(id);added.push(id)}catch(err){toast(err.message)}}drawPh()}};
  drawPh();
  if(seed.acts&&seed.acts.includes('photo'))setTimeout(()=>{const i=$('input[type=file]',phs);i&&i.click()},300);
  $('[data-x]',o).onclick=()=>{added.forEach(delPhoto);closeOverlay(o)};
  const d=$('[data-del]',o);if(d)d.onclick=async()=>{if(!await confirmDlg('Diesen Eintrag mit Fotos löschen?','Löschen',true))return;[...photos,...removed].forEach(delPhoto);del(ex.id);closeOverlay(o);render()};
  $('[data-s]',o).onclick=()=>{
-  const val=n=>{const el=$(`[name=${n}]`,o);return el?num(el.value):null};
-  const out={id:ex?ex.id:uid(),type:'entry',growId,created:ex?ex.created:new Date().toISOString(),date:$('[name=date]',o).value||nowLocal(),plantIds:[...sel],acts:[...acts],photos,note:$('[name=note]',o).value.trim()};
-  const pack=obj=>{Object.keys(obj).forEach(k=>obj[k]==null&&delete obj[k]);return Object.keys(obj).length?obj:null};
-  if(acts.has('water'))out.water=pack({amount:val('w_amount'),ph:val('w_ph'),ec:val('w_ec'),temp:val('w_temp'),rph:val('w_rph'),rec:val('w_rec')})||{};
-  if(acts.has('feed'))out.nutrients=$$('.nrow',o).map(r=>({name:$('[name=nname]',r).value.trim(),dose:num($('[name=ndose]',r).value)})).filter(n=>n.name);
-  if(acts.has('env'))out.env=pack({temp:val('v_temp'),rh:val('v_rh'),light:val('v_light'),ppfd:val('v_ppfd'),co2:val('v_co2'),dist:val('v_dist')});
+  const val=n=>num($(`[name=${n}]`,o).value),pack=x=>{Object.keys(x).forEach(k=>x[k]==null&&delete x[k]);return Object.keys(x).length?x:null};
+  const out={id:ex?ex.id:uid(),type:'log',envId:eid,date:$('[name=date]',o).value||nowLocal(),plantIds:[...sel],acts:[...acts],photos,note:$('[name=note]',o).value.trim()};
+  if(acts.has('water'))out.water=pack({amount:val('w_amount'),ph:val('w_ph'),ec:val('w_ec'),rph:val('w_rph'),rec:val('w_rec')})||{};
+  if(acts.has('feed')){out.nutrients=readRows(o);if(mixName)out.mixName=mixName}
+  if(acts.has('env'))out.env=pack({temp:val('v_temp'),rh:val('v_rh'),ppfd:val('v_ppfd'),co2:val('v_co2')});
   if(acts.has('measure')){const h=val('height');if(h!=null)out.height=h}
-  if(acts.has('training'))out.training=$$('[data-multi=training] .chip.on',o).map(b=>b.dataset.v);
+  if(acts.has('train'))out.training=$$('[data-multi=training] .chip.on',o).map(b=>b.dataset.v);
   if(acts.has('problem'))out.problems=$$('[data-multi=problems] .chip.on',o).map(b=>b.dataset.v);
-  if(acts.has('harvest'))out.harvest=pack({wet:val('h_wet'),dry:val('h_dry')});
-  if(acts.has('phase')){out.phase=$('[name=phase]',o).value;sel.forEach(pid=>{const p=get(pid);p.phases=p.phases||{};p.phases[out.phase]=out.date.slice(0,10);put(p)})}
-  if(!out.acts.length&&!out.photos.length&&!out.note){toast('Wähle eine Aktivität, ein Foto oder eine Notiz');return}
-  removed.forEach(delPhoto);put(out);closeOverlay(o);if(R.v!=='home')R.tab='log';render();toast('Gespeichert')};
-}
+  if(acts.has('transplant')){const pot=$('[name=pot]',o).value.trim();if(pot){out.pot=pot;sel.forEach(pid=>{const p=get(pid);if(p){p.pot=pot;put(p)}})}}
+  if(acts.has('phase')){out.phase=$('[name=phase]',o).value;sel.forEach(pid=>{const p=get(pid);if(p){p.phases=p.phases||{};p.phases[out.phase]=out.date.slice(0,10);put(p)}})}
+  if(e0.harvest)out.harvest=e0.harvest;
+  if(!out.acts.length&&!out.photos.length&&!out.note){toast('Wähle eine Aktion, ein Foto oder eine Notiz');return}
+  removed.forEach(delPhoto);put(out);closeOverlay(o);render();toast('Gespeichert')}}
 
-/* ============ Einstellungen / Backup ============ */
-function vSettings(){
- R.after=()=>{if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(s=>{const el=$('#stor');if(el&&s.usage!=null)el.textContent+=` Belegt: ${fmtN(s.usage/1048576,1)} MB.`}).catch(()=>{})};
- return `<header class="top"><button class="ib" onclick="back()">‹</button><div class="ttl">Einstellungen</div><span class="ib"></span></header><div class="wrap">
- <div class="h2">Auf dem iPhone installieren</div><div class="card small">In <b>Safari</b> öffnen → <b>Teilen</b> (Quadrat mit Pfeil) → <b>„Zum Home-Bildschirm“</b>. Danach startet Grow with Jonny wie eine App im Vollbild und funktioniert auch offline.</div>
- <div class="h2">Speicher</div><div class="card small"><div id="stor">${storeOK?'Alle Daten und Fotos liegen nur auf diesem Gerät.':'Speichern ist hier nicht verfügbar.'}</div><div class="muted" style="margin-top:6px">Wichtig: Wenn du die App löschst oder Safari-Websitedaten löschst, sind die Daten weg. Mach regelmäßig ein Backup.</div></div>
- <div class="h2">Backup</div><div class="card"><button class="btn primary block" onclick="exportData()">Backup exportieren</button><label class="btn block" style="margin-top:8px">Backup importieren<input type="file" accept="application/json,.json" hidden onchange="importData(this.files[0])"></label><div class="muted small" style="margin-top:8px">Das Backup enthält alle Grows, Einträge und Fotos in einer Datei. Speichere sie in „Dateien“ oder iCloud Drive.</div></div>
- <div class="h2">Gefahrenzone</div><div class="card"><button class="btn danger block" onclick="wipe()">Alle Daten löschen</button></div>
- <p class="muted tiny" style="text-align:center;margin:24px 0">Grow with Jonny · ${all('grow').length} Grows · ${all('entry').length} Einträge</p></div>`}
+/* ================= Backup ================= */
 function blobToB64(b){return new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(b)})}
 async function exportData(){
- toast('Backup wird erstellt…');const items=[...mem.items.values()];const ids=new Set();items.forEach(o=>(o.photos||[]).forEach(id=>ids.add(id)));
+ toast('Backup wird erstellt …');const items=[...mem.items.values()],ids=new Set();items.forEach(o=>(o.photos||[]).forEach(id=>ids.add(id)));
  const photos={};for(const id of ids){const b=await getPhoto(id);if(b)photos[id]=await blobToB64(b)}
- const blob=new Blob([JSON.stringify({app:'growbuch',version:1,exported:new Date().toISOString(),items,photos})],{type:'application/json'});
+ const blob=new Blob([JSON.stringify({app:'growbuch',version:2,exported:new Date().toISOString(),items,photos})],{type:'application/json'});
  const name='grow-with-jonny-backup-'+ymd()+'.json';
  try{const file=new File([blob],name,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:'Grow with Jonny Backup'});return}}catch(e){if(e&&e.name==='AbortError')return}
  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},2000)}
 async function importData(file){if(!file)return;try{const d=JSON.parse(await file.text());if(d.app!=='growbuch'||!Array.isArray(d.items))throw new Error();
- if(!await confirmDlg(`Backup mit ${d.items.filter(o=>o.type==='grow').length} Grows und ${Object.keys(d.photos||{}).length} Fotos importieren? Vorhandene Daten bleiben erhalten, gleiche Einträge werden überschrieben.`,'Importieren'))return;
- for(const[id,b64]of Object.entries(d.photos||{})){const b=await (await fetch(b64)).blob();await putPhoto(b,id)}
- for(const o of d.items){mem.items.set(o.id,o);await req('items','readwrite',s=>s.put(o)).catch(saveErr)}toast('Import abgeschlossen');R={v:'home'};hist.length=0;render()}catch(e){toast('Datei ist kein gültiges Backup')}}
-async function wipe(){if(!await confirmDlg('Wirklich ALLE Grows, Einträge und Fotos von diesem Gerät löschen?','Alles löschen',true))return;
- mem.items.clear();mem.photos.clear();await req('items','readwrite',s=>s.clear()).catch(()=>{});await req('photos','readwrite',s=>s.clear()).catch(()=>{});R={v:'home'};hist.length=0;render()}
+ if(!await confirmDlg(`Backup mit ${d.items.filter(o=>o.type==='plant').length} Pflanzen und ${Object.keys(d.photos||{}).length} Fotos importieren? Vorhandene Daten bleiben erhalten.`,'Importieren'))return;
+ for(const[id,b64]of Object.entries(d.photos||{})){const b=await(await fetch(b64)).blob();await putPhoto(b,id)}
+ for(const o of d.items){mem.items.set(o.id,o);await req('items','readwrite',s=>s.put(o)).catch(saveErr)}migrate();toast('Import abgeschlossen');tab('today')}catch(e){toast('Datei ist kein gültiges Backup')}}
+async function wipe(){if(!await confirmDlg('Wirklich ALLE Zelte, Pflanzen, Einträge und Fotos von diesem iPhone löschen?','Alles löschen',true))return;
+ mem.items.clear();mem.photos.clear();await req('items','readwrite',s=>s.clear()).catch(()=>{});await req('photos','readwrite',s=>s.clear()).catch(()=>{});tab('today')}
 
-/* ============ UI-Bausteine ============ */
-function openOverlay(html){const o=document.createElement('div');o.className='overlay';o.innerHTML=html;document.body.appendChild(o);document.body.style.overflow='hidden';const x=$('[data-x]',o);if(x&&!x.onclick)x.onclick=()=>closeOverlay(o);return o}
+/* ================= UI-Bausteine ================= */
+function openOverlay(html){const o=document.createElement('div');o.className='overlay';o.innerHTML=html;document.body.appendChild(o);document.body.style.overflow='hidden';const x=$('[data-x]',o);if(x)x.onclick=()=>closeOverlay(o);return o}
 function closeOverlay(o){o.remove();if(!$('.overlay'))document.body.style.overflow=''}
 function dialog(inner){return new Promise(res=>{const bg=document.createElement('div');bg.className='dlgbg';bg.innerHTML=`<div class="dlg">${inner}</div>`;document.body.appendChild(bg);
  bg.onclick=e=>{const b=e.target.closest('[data-k]');if(b||e.target===bg){bg.remove();res(b?b.dataset.k:null)}}})}
@@ -540,10 +735,10 @@ let tt;function toast(m){let t=$('.toast');if(!t){t=document.createElement('div'
 function lightbox(list,i){const o=document.createElement('div');o.className='lb';document.body.appendChild(o);
  const draw=async()=>{o.innerHTML=`<div class="bar"><button class="ib" data-c>✕</button><div class="cap">${esc(list[i].cap)}</div><span class="tiny muted">${i+1}/${list.length}</span></div><div class="imgw"><img alt=""></div><div class="bar" style="padding-bottom:calc(10px + var(--sab))"><button class="btn grow1" data-p ${i?'':'disabled'}>‹ Zurück</button><button class="btn grow1" data-n ${i<list.length-1?'':'disabled'}>Weiter ›</button></div>`;
   $('img',o).src=await photoURL(list[i].id);$('[data-c]',o).onclick=()=>o.remove();$('[data-p]',o).onclick=()=>{if(i>0){i--;draw()}};$('[data-n]',o).onclick=()=>{if(i<list.length-1){i++;draw()}}};
- let sx=null;o.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});o.addEventListener('touchend',e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>50){if(dx<0&&i<list.length-1)i++;else if(dx>0&&i>0)i--;else return;draw()}sx=null});draw()}
+ let sx=null;o.addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});o.addEventListener('touchend',e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx;sx=null;if(dx<-50&&i<list.length-1){i++;draw()}else if(dx>50&&i>0){i--;draw()}});draw()}
 
-/* ============ Start ============ */
-(async()=>{await initStore();render();
+/* ================= Start ================= */
+(async()=>{await initStore();migrate();render();
  if('serviceWorker'in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
 </script>
