@@ -54,6 +54,11 @@ select{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),
 .tb.on{color:var(--accent)}
 .tbplus{justify-self:center;width:56px;height:56px;border-radius:50%;background:var(--accent);color:var(--accentInk);margin-top:-24px;display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 4px var(--bg)}
 .tbplus svg{width:28px;height:28px;stroke:currentColor;stroke-width:2.6;stroke-linecap:round}
+button:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+summary{cursor:pointer;padding:12px 0;min-height:44px}
+.garden-summary{display:flex;align-items:center;justify-content:space-between;width:100%;text-align:left}
+.garden-summary .small{display:block;margin-top:4px}
+.tb{min-height:44px;color:var(--muted)}
 /* tent cards */
 .ecard{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:14px;margin-bottom:12px}
 .ehead{display:flex;width:100%;text-align:left;align-items:center;gap:8px}
@@ -370,8 +375,8 @@ function render(){
  if(R.after){const f=R.after;R.after=null;f()}
  if(window._cd)drawCharts();
 }
-function tabbar(){const r=rootOf(),T=(k,l,svg)=>`<button class="tb ${r===k?'on':''}" onclick="tab('${k}')">${svg}<span>${l}</span></button>`;
- return `<nav class="tabbar"><div class="brand">🌱 Grow with Jonny</div>${T('today','Heute',IC.home)}${T('garden','Garten',IC.leaf)}<button class="tbplus" onclick="plusMenu()" aria-label="Neuer Eintrag">${IC.plus}<span class="pl">Neuer Eintrag</span></button>${T('cal','Kalender',IC.cal)}${T('more','Mehr',IC.more)}<div class="sbsync" data-sync>${syncText()}</div></nav>`}
+function tabbar(){const r=rootOf(),T=(k,l,svg)=>`<button class="tb ${r===k?'on':''}" ${r===k?'aria-current="page"':''} onclick="tab('${k}')">${svg}<span>${l}</span></button>`;
+ return `<nav class="tabbar"><div class="brand">🌱 Grow with Jonny</div>${T('today','Heute',IC.home)}${T('garden','Garten',IC.leaf)}<button class="tbplus" onclick="plusMenu()" aria-label="Neuer Eintrag">${IC.plus}<span class="pl">Neuer Eintrag</span></button>${T('cal','Kalender',IC.cal)}${T('more','Einstellungen',IC.more)}<div class="sbsync" data-sync>${syncText()}</div></nav>`}
 const head=(title,menu)=>`<header class="top"><button class="ib" onclick="back()" aria-label="Zurück">‹</button><div class="ttl">${esc(title)}</div>${menu?`<button class="ib" onclick="${menu}" aria-label="Menü">⋯</button>`:'<span class="ib"></span>'}</header>`;
 const bighead=(title,sub,right='')=>`<header class="top big"><div class="ttl">${title}${sub?`<div class="sub">${sub}</div>`:''}</div>${right}</header>`;
 const tabs=(list,on)=>`<div class="tabs">${list.map(([k,l])=>`<button class="tab ${k==on?'on':''}" onclick="R.tab='${k}';render()">${l}</button>`).join('')}</div>`;
@@ -382,29 +387,37 @@ function vToday(){
  const es=envs();const open=all('task').filter(t=>!t.done);
  const due=open.filter(t=>!t.due||t.due<=ymd()).sort((a,b)=>(a.due||'').localeCompare(b.due||''));
  const soon=open.filter(t=>t.due&&t.due>ymd()&&t.due<=addDays(ymd(),3)).sort((a,b)=>a.due.localeCompare(b.due));
- const recent=all('log').sort(byDate).slice(0,5);
+ const recent=all('log').sort(byDate).slice(0,3);
  let h=bighead('Heute',new Date().toLocaleDateString('de-DE',{weekday:'long',day:'numeric',month:'long'}))+`<div class="wrap">`;
  if(!storeOK)h+=`<div class="banner">Speichern ist in dieser Ansicht nicht möglich. Öffne die App in Safari und lege sie auf den Home-Bildschirm.</div>`;
- if(sb&&!session&&ls.get('gwj.hideSync')!=='1')h+=`<div class="card synccard" style="margin-bottom:12px"><span style="font-size:26px">☁️</span><div class="grow1 small"><b>Cloud-Sync ist aus.</b> Melde dich an, damit iPhone und Mac dieselben Daten haben.<div class="row" style="margin-top:8px"><button class="btn primary" style="padding:8px 14px" onclick="authSheet()">Anmelden</button><button class="btn" style="padding:8px 14px" onclick="ls.set('gwj.hideSync','1');render()">Später</button></div></div></div>`;
  if(!es.length)return h+setupCard()+`</div>`;
  h+=`<div class="h2">Aufgaben<button onclick="editTask()">+ Erinnerung</button></div>`;
  h+=due.length?due.map(taskRow).join(''):`<div class="card muted small">✓ Heute ist nichts fällig.</div>`;
  if(soon.length)h+=`<div class="muted small" style="margin:10px 4px 6px">Demnächst</div>`+soon.map(taskRow).join('');
- h+=`<div class="h2">Deine Zelte</div><div class="egrid">`+es.map(e=>envCard(e,false)).join('')+`</div>`;
+ h+=`<div class="h2">Mein Garten<button onclick="tab('garden')">Alle ansehen ›</button></div><button class="card garden-summary" onclick="tab('garden')"><span>🌱 <b>${activePlants().length} Pflanzen</b><span class="muted small">${es.length} Zelte · Pflanzen und Standorte öffnen</span></span><span>›</span></button><button class="btn primary block" style="margin-top:12px" onclick="plusMenu()">＋ Eintrag hinzufügen</button>`;
  const jars=jarPlants();if(jars.length)h+=`<div class="card small">🫙 <b>${jars.length}</b> im Glas (Curing) · <button style="color:var(--accent)" onclick="tab('garden')">ansehen</button></div>`;
  if(recent.length)h+=`<div class="h2">Zuletzt</div>`+timeline(recent,'all');
  return h+`</div>`}
-function setupCard(){return `<div class="card" style="text-align:center;margin-top:10px"><div style="font-size:38px">⛺ ⛺ ⛺ 🍂</div><div style="font-size:20px;font-weight:700;margin-top:6px">Richte dein Setup ein</div><p class="muted small">Ein Tipp legt deine drei Growzelte und das Trockenzelt an. Größe, Licht und Medium trägst du danach beim jeweiligen Zelt ein.</p><button class="btn primary block" onclick="quickSetup()">3 Zelte + Trockenzelt anlegen</button><button class="btn block" style="margin-top:8px" onclick="editEnv()">Zelt einzeln anlegen</button></div>`}
+function setupCard(){return `<div class="card" style="text-align:center;margin-top:10px"><div style="font-size:38px">🌱</div><h2>Dein Garten beginnt hier</h2><p class="muted small">Lege zuerst ein Zelt an. Danach fügst du deine Pflanzen hinzu und hältst Fotos und Beobachtungen im Tagebuch fest.</p><button class="btn primary block" onclick="editEnv()">Erstes Zelt anlegen</button><details style="margin-top:16px"><summary class="muted small">Mehrere Zelte auf einmal</summary><p class="small muted">Für ein größeres Setup mit drei Growzelten und einem Trockenzelt.</p><button class="btn block" onclick="quickSetup()">3 Zelte + Trockenzelt anlegen</button></details></div>`}
 function quickSetup(){const t=new Date().toISOString();['Zelt 1','Zelt 2','Zelt 3'].forEach((n,i)=>put({id:uid(),type:'env',kind:'grow',name:n,schedule:'18/6',order:i,created:t}));
  put({id:uid(),type:'env',kind:'dry',name:'Trockenzelt',order:9,created:t});toast('Setup angelegt – jetzt Pflanzen hinzufügen');tab('garden')}
 
 /* ================= Garten ================= */
-function vGarden(){const es=envs(),jars=jarPlants();
- let h=bighead('Garten',es.length?`${es.length} Zelte · ${activePlants().length} Pflanzen`:'')+`<div class="wrap">`;
- if(!es.length)return h+setupCard()+`</div>`;
- h+=`<div class="egrid">`+es.map(e=>envCard(e,true)).join('');
- if(jars.length)h+=`<div class="ecard"><div class="ename">🫙 Gläser (Curing)</div><div class="muted small">${jars.length} Pflanze${jars.length>1?'n':''} im Glas</div><div class="pstrip">${jars.map(plantMini).join('')}</div></div>`;
- return h+`</div><button class="btn block" style="margin-top:12px" onclick="editEnv()">+ Zelt hinzufügen</button></div>`}
+function vGarden(){const es=envs(),ps=activePlants(),mode=R.tab||'plants';
+ let h=bighead('Garten',`${ps.length} Pflanzen · ${es.length} Zelte`)+`<div class="wrap">`;
+ if(!es.length&&!ps.length)return h+setupCard()+`</div>`;
+ h+=tabs([['plants','Pflanzen'],['envs','Zelte']],mode);
+ if(mode==='plants'){
+ h+=`<div class="row" style="margin:14px 0"><button class="btn primary grow1" onclick="${es.some(e=>e.kind!=='dry')?'editPlant()':'editEnv()'}">＋ ${es.some(e=>e.kind!=='dry')?'Pflanze hinzufügen':'Zelt anlegen'}</button><button class="btn" onclick="go({v:'archive'})">Archiv</button></div><label class="small muted" for="plant-search">Pflanze oder Sorte suchen</label><input id="plant-search" type="search" placeholder="Name oder Sorte eingeben" value="${esc(R.query||'')}" oninput="R.query=this.value;filterGarden()" style="margin:6px 0 14px"><div id="garden-plants"></div>`;
+ R.after=filterGarden;
+ }else{
+ h+=`<p class="muted small">Öffne ein Zelt für Pflanzen, Tagebuch und Klima.</p><div class="egrid">`+es.map(e=>envCard(e,true)).join('')+`</div><button class="btn block" style="margin-top:12px" onclick="editEnv()">＋ Zelt hinzufügen</button>`;
+ }
+ return h+`</div>`}
+function filterGarden(){const box=$('#garden-plants');if(!box)return;const q=(R.query||'').trim().toLocaleLowerCase('de');
+ const ps=activePlants().sort(byName).filter(p=>[p.name,p.strain].some(v=>(v||'').toLocaleLowerCase('de').includes(q)));
+ box.innerHTML=ps.length?ps.map(plantCard).join(''):`<div class="card muted small">${q?'Keine passende Pflanze gefunden. Ändere deinen Suchbegriff.':'Noch keine Pflanzen. Füge deine erste Pflanze hinzu.'}</div>`;hydrate(box)}
+
 function phasePills(ps){const c={},d={};ps.forEach(p=>{const a=ageAt(p),k=a.ph.k;c[k]=(c[k]||0)+1;d[k]=Math.max(d[k]||0,a.pday)});
  return PHASES.filter(x=>c[x.k]).map(x=>`<span class="pill"><i style="background:${x.c}"></i>${c[x.k]}× ${x.l} · T${d[x.k]}</span>`).join('')}
 function envMeta(e){const dry=e.kind==='dry';return[dry&&!/trocken/i.test(e.name||'')?'Trockenzelt':null,e.size,!dry&&e.schedule?'☀️ '+e.schedule:null,e.light?e.light+(e.watt?' '+e.watt+' W':''):null,e.medium].filter(Boolean).map(esc).join(' · ')}
@@ -570,7 +583,7 @@ function editTask(t,envId,due){
 /* ================= Mehr / Mixe / Archiv ================= */
 function vMore(){R.after=()=>{if(navigator.storage&&navigator.storage.estimate)navigator.storage.estimate().then(s=>{const el=$('#stor');if(el&&s.usage!=null)el.textContent=`Belegt: ${fmtN(s.usage/1048576,1)} MB`}).catch(()=>{})};
  const arch=all('plant').filter(p=>p.archived).length;
- return bighead('Mehr')+`<div class="wrap">
+ return bighead('Einstellungen')+`<div class="wrap">
  <div class="h2">Cloud-Sync</div>${session?`<div class="card"><div class="synccard"><span style="font-size:26px">☁️</span><div class="grow1"><b>${esc(session.user.email)}</b><div class="muted small" data-sync>${syncText()}</div></div></div><div class="row" style="margin-top:12px"><button class="btn grow1" onclick="syncNow()">Jetzt abgleichen</button><button class="btn" onclick="signOut()">Abmelden</button></div></div>`
   :`<div class="card"><div class="synccard"><span style="font-size:26px">☁️</span><div class="grow1"><b>iPhone & Mac abgleichen</b><div class="muted small">${sb?'Mit demselben Konto auf beiden Geräten anmelden – Einträge und Fotos erscheinen dann überall.':'Cloud gerade nicht erreichbar (offline?). Die App funktioniert trotzdem.'}</div></div></div>${sb?`<button class="btn primary block" style="margin-top:12px" onclick="authSheet()">Anmelden / Konto erstellen</button>`:''}</div>`}
  <div class="h2">Grow</div><div><button class="lrow" onclick="go({v:'mixes'})"><span class="ico">🧪</span><span class="grow1">Nährstoff-Mixe</span><span class="muted">${mixes().length} ›</span></button><button class="lrow" onclick="go({v:'archive'})"><span class="ico">📦</span><span class="grow1">Archiv (abgeschlossene Pflanzen)</span><span class="muted">${arch} ›</span></button><button class="lrow" onclick="editEnv()"><span class="ico">⛺</span><span class="grow1">Zelt hinzufügen</span><span class="muted">›</span></button></div>
@@ -656,7 +669,8 @@ function stageFlow(phase,c={}){
 /* ================= Plus-Menü & Klima ================= */
 async function plusMenu(){const c=ctx();
  const items=[['water','💧','Gießen'],['feed','🧪','Düngen'],['env','🌡️','Klima'],['photo','📷','Foto'],['train','✂️','Training'],['transplant','🪴','Umtopfen'],['measure','📏','Messen'],['problem','🐛','Problem'],['note','📝','Notiz'],['harvest','🌾','Ernten'],['task','🔔','Erinnerung'],['plant','🌱','Pflanze']];
- const k=await dialog(`<div class="pgrid">${items.map(([k,i,l])=>`<button data-k="${k}"><span>${i}</span>${l}</button>`).join('')}</div><button class="btn" data-k="">Abbrechen</button>`);
+ const choices=list=>list.map(([k,i,l])=>`<button data-k="${k}"><span>${i}</span>${l}</button>`).join('');
+ const k=await dialog(`<h2 style="margin:0 0 6px">Eintrag hinzufügen</h2><p class="muted small">${c.plantIds?'Für die geöffnete Pflanze':c.envId?'Für das geöffnete Zelt':'Wähle eine Aktion. Das Zelt wählst du im nächsten Schritt.'}</p><div class="pgrid">${choices(items.filter(x=>['water','feed','env','photo','note','task'].includes(x[0])))}</div><details><summary>Weitere Aktionen</summary><div class="pgrid">${choices(items.filter(x=>!['water','feed','env','photo','note','task'].includes(x[0])))}</div></details><button class="btn block" data-k="">Abbrechen</button>`);
  if(!k)return;if(!envs().length&&k!=='task'){toast('Lege zuerst deine Zelte an');tab('garden');return}
  if(k==='env')return quickClimate(c.envId);
  if(k==='harvest')return stageFlow('drying',c);
